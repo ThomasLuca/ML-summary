@@ -44,12 +44,21 @@
   
     <script src="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/jquery.sticky-kit.js"></script>
     <meta name="generator" content="pandoc" />
-  <title>summary</title>
+  <title>Machine Learning summary</title>
   <style type="text/css">code{white-space: pre;}</style>
 </head>
 <body>
 
     
+    <div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <span class="doc-title">Machine Learning summary</span>
+        <ul class="nav pull-right doc-info">
+                            </ul>
+      </div>
+    </div>
+  </div>
     <div class="container">
     <div class="row">
             <div id="TOC" class="span3">
@@ -98,6 +107,17 @@
         <ul>
         <li><a href="#linear-regression"
         id="toc-linear-regression">Linear regression</a></li>
+        <li><a href="#polynomial-regression"
+        id="toc-polynomial-regression">Polynomial regression</a></li>
+        <li><a href="#model-regularization"
+        id="toc-model-regularization">Model regularization</a></li>
+        <li><a href="#cross-validation" id="toc-cross-validation">Cross
+        validation</a></li>
+        <li><a href="#hyper-parameter-optimization"
+        id="toc-hyper-parameter-optimization">Hyper parameter
+        optimization</a></li>
+        <li><a href="#classification-1"
+        id="toc-classification-1">Classification</a></li>
         </ul></li>
         </ul></li>
         </ul>
@@ -140,13 +160,13 @@
 <td>Learn series of actions</td>
 </tr>
 <tr class="even">
-<td>eg: Classification or regression[^1]</td>
+<td>eg: Classification or regression<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
 <td>eg: Anomaly detection</td>
 <td>eg: alphago</td>
 </tr>
 </tbody>
 </table>
-<p>[^1]: Regression = predict a target value from sample’s feature</p>
 <h3 id="model-based-vs-instance-based-learning">Model based vs instance
 based learning</h3>
 <table>
@@ -170,11 +190,18 @@ instance</td>
 </table>
 <h3 id="training-a-model">Training a model</h3>
 <ol type="1">
-<li>Choose a parameterized model family
-(<code>life satisfaction = θ0 + θ1 ∙ GDP_per_capita</code>)</li>
+<li>Choose a parameterized model family (<span class="math inline">life
+satisfaction = <em>θ</em><sub>0</sub> + <em>θ</em><sub>1</sub> ⋅ GDP_per_capita</span>)</li>
 <li>Find parameter values that maximize a fitness function or minimize a
 cost function</li>
 </ol>
+<dl>
+<dt><strong>No free lunch</strong></dt>
+<dd>
+There is no model that is guaranteed to work better, a lot of testing
+must happen to choose and fine-tune the model.
+</dd>
+</dl>
 <h4 id="testing-and-validation">Testing and validation</h4>
 <figure>
 <img src="./img/testing_train_test.png"
@@ -249,15 +276,20 @@ class="math inline">$x_{norm} = \frac{x - min(x)}{max(x) -
 min(x)}$</span></li>
 <li><strong>Standardization</strong>: <span
 class="math inline">$x_{stand} = \frac{x -
-mean(x)}{standard_deviation(x)}$</span></li>
+mean(x)}{standarddeviation(x)}$</span></li>
 </ul>
 <h2 id="classification">3. Classification</h2>
 <p>Classification always happens by <em>supervised learning</em>
 models</p>
 <h3 id="performance-metrics">Performance Metrics</h3>
 <h4 id="accuracy">Accuracy</h4>
-<p><strong>Accuracy</strong>: the percentage of predicted labels that
-corresponds with the ground truth label.</p>
+<dl>
+<dt><strong>Accuracy</strong></dt>
+<dd>
+The percentage of predicted labels that corresponds with the ground
+truth label.
+</dd>
+</dl>
 <p><span class="math inline">$Accuracy = \frac{TP +
 TN}{Total}$</span></p>
 <h4 id="confusion-matrix">Confusion Matrix</h4>
@@ -284,10 +316,18 @@ TN}{Total}$</span></p>
 </tbody>
 </table>
 <h4 id="precision-and-recall">Precision and recall</h4>
-<p>Accuracy of the positive predictions: <span
-class="math inline">$precision = \frac{TP}{TP+FP}$</span></p>
-<p>How many of the actual positives are detected?: <span
-class="math inline">$recall = \frac{TP}{TP+FN}$</span></p>
+<dl>
+<dt><strong>Precision</strong></dt>
+<dd>
+Accuracy of the positive predictions: <span
+class="math inline">$precision = \frac{TP}{TP+FP}$</span>
+</dd>
+<dt>Recall</dt>
+<dd>
+How many of the actual positives are detected?: <span
+class="math inline">$recall = \frac{TP}{TP+FN}$</span>
+</dd>
+</dl>
 <p><strong>When do we want high precision?</strong></p>
 <ul>
 <li>When false positives are costly (eg: medical predictions, fraud
@@ -308,14 +348,20 @@ metric.</p>
 <p><span class="math inline">$F_{1} = 2 . \frac{precision \cdot
 recall}{precision + recall}$</span></p>
 <h3 id="binary-classification">Binary Classification</h3>
-<p><strong>Binary</strong>: Only two classes.</p>
+<dl>
+<dt><strong>Binary</strong></dt>
+<dd>
+Only two classes.
+</dd>
+</dl>
 <ul>
 <li><strong>Decision boundary</strong>: hypersurface that partitions
 underlying vector space into two sets, one for each class.</li>
 <li><strong>Score/Class Probability</strong>: <span
-class="math inline">$\hat{y}(x^{(i)}) = \begin{cases} +1   if
-h_{\theta}(x^{(i)}) \geq T \\ -1   if h_{\theta}(x^{(i)}) &lt; T
-\end{cases}$</span> (T = threshold as hyperparam)</li>
+class="math inline">$\hat{y}(x^{(i)}) = \begin{cases} +1 \quad
+\text{if}\quad h_{\theta}(x^{(i)}) \geq T \\ -1 \quad \text{if}\quad
+h_{\theta}(x^{(i)}) &lt; T \end{cases}$</span> (T = threshold as
+hyperparam)</li>
 </ul>
 <h4 id="choosing-a-threshold">Choosing a threshold</h4>
 <h5 id="precision-vs-recall-choosing-a-threshold">Precision vs Recall
@@ -386,6 +432,218 @@ y_{i})^2}{n}}$</span></li>
 </ul></li>
 </ul>
 <h4 id="direct-solution">Direct solution</h4>
+<ul>
+<li>Directly calculate the optimal parameter given a labelled dataset
+(rare)</li>
+<li>Like generating a trendline in excel</li>
+<li><strong>Ordinary least squares</strong>
+<ol type="1">
+<li>Calculate the partial derivatives of the loss function with respect
+to the parameters (<span
+class="math inline"><em>Θ</em><sub>0</sub>, <em>Θ</em><sub>1</sub></span>)</li>
+<li>Set derivatives to zero</li>
+<li>Solve the set of equations</li>
+</ol></li>
+<li>Relies on matrix inversion: <span
+class="math inline"><em>O</em>(<em>n</em><sup>3</sup>)</span></li>
+</ul>
+<h4 id="gradient-descent">Gradient descent</h4>
+<dl>
+<dt><strong>Gradient descent</strong></dt>
+<dd>
+It is a first-order iterative algorithm for finding a local minimum of a
+differentiable multivariate function.
+</dd>
+</dl>
+<ul>
+<li>Generic optimization algorithm</li>
+<li>Procedure:
+<ol type="1">
+<li>Calculate the partial derivatives of the Loss function with respect
+to the parameters (<span
+class="math inline"><em>Θ</em><sub>0</sub>, <em>Θ</em><sub>1</sub></span>)</li>
+<li>Pick random values for (<span
+class="math inline"><em>Θ</em><sub>0</sub>, <em>Θ</em><sub>1</sub></span>)
+and evaluate the partial derivative function. These describe how the
+loss function changes when you change (<span
+class="math inline"><em>Θ</em><sub>0</sub>, <em>Θ</em><sub>1</sub></span>)</li>
+<li>Adjust (<span
+class="math inline"><em>Θ</em><sub>0</sub>, <em>Θ</em><sub>1</sub></span>)
+in opposite directions of the gradient</li>
+<li>Repeat until convergence</li>
+</ol></li>
+<li><strong>Learning rate</strong> determines step size</li>
+</ul>
+<blockquote>
+<p>Convex vs non-convex optimization problem<br />
+<strong>Convex</strong>: There is no <em>local minimum</em>, only one
+<em>global minimum</em>. Gradient descent guaranteed to find
+minimum.<br />
+<strong>Non-convex</strong>: There are <em>local minima</em>, meaning
+that model can easily get stuck on bad model.</p>
+</blockquote>
+<h5 id="batch-gradient-descent">Batch Gradient descent</h5>
+<p>Combination of Batch and Stochastic</p>
+<p>Calculate the gradient using all available training data before
+performing a step</p>
+<ul>
+<li>✅ You use all data -&gt; great model</li>
+<li>❌ Very slow for small datasets</li>
+</ul>
+<h5 id="stochastic-gradient-descent">Stochastic Gradient descent</h5>
+<p>Loop over all training data, calculate the gradient and take a step
+for each sample</p>
+<ul>
+<li>✅ Fast</li>
+<li>✅ Only uses memory for single sample instead of entire dataset</li>
+<li>❌ Gradient estimate will be noisy
+<ul>
+<li>unlikely to find optimal solution</li>
+<li>randomness might help to escape local minima</li>
+</ul></li>
+</ul>
+<h5 id="mini-batch-gradient-descent">Mini-batch Gradient descent</h5>
+<p>Combination of Batch and Stochastic</p>
+<h3 id="polynomial-regression">Polynomial regression</h3>
+<p>If the relationship is not linear. (eg: temperature and sales of ice
+cream. Hot days mean lots of sales, but too hot and eating ice cream
+becomes inconvenient)</p>
+<ul>
+<li>Fit on non-linear model: <span
+class="math inline"><em>y</em> = <em>f</em>(<em>x</em>) = <em>Θ</em><sub>0</sub> + <em>Θ</em><sub>1</sub><em>x</em> + <em>Θ</em><sub>2</sub><em>x</em><sup>2</sup></span></li>
+<li>Find (<span class="math inline"><em>Θ</em><sub>0</sub></span>, <span
+class="math inline"><em>Θ</em><sub>1</sub></span>, <span
+class="math inline"><em>Θ</em><sub>2</sub></span>) with gradient
+descent</li>
+<li>Transform data to space where it can be solved with linear
+model</li>
+</ul>
+<h3 id="model-regularization">Model regularization</h3>
+<p>There are 3 kinds of <strong>generalization</strong> (make useful
+predictions on unseen data) errors:</p>
+<dl>
+<dt><strong>Bias error</strong></dt>
+<dd>
+Mistakes because of wrong assumptions when designing the model =
+<em>underfitting</em> (eg: assuming linear relations)
+</dd>
+<dt><strong>Variance error</strong></dt>
+<dd>
+Mistakes made because the model is very sensitive to small variations in
+the input = <em>overfitting</em>
+</dd>
+<dt><strong>Irreducible error</strong></dt>
+<dd>
+Noise in the data
+</dd>
+</dl>
+<p>How to regularize a model:</p>
+<ul>
+<li>Limit the models expressive power -&gt; less overfitting -&gt;
+better generalization</li>
+<li>Add regularization term that forces weights to be small</li>
+<li><strong>Ridge regression</strong>: Tries to approach a loss of
+0</li>
+<li><strong>Lasso regression</strong>: Tries to reach a loss of 0 (-&gt;
+<strong>Sparse model</strong>)</li>
+<li><strong>Elastic net</strong>: Weighted sum of Ridge and LASSO</li>
+</ul>
+<h3 id="cross-validation">Cross validation</h3>
+<p>If there is too little data to afford splitting into test/train/val,
+you can reuse a lot of data using cross-validation</p>
+<ol type="1">
+<li>Split data into K equal folds (K=5 or K=10)</li>
+<li>Train using folds 1-9</li>
+<li>Test using fold 10</li>
+<li>Repeat 10 times with other folds as test set</li>
+<li>Report average accuracy and standard deviation</li>
+</ol>
+<ul>
+<li>✅: All data will be used for evaluation</li>
+<li>❌: Computationally expensive</li>
+</ul>
+<h3 id="hyper-parameter-optimization">Hyper parameter optimization</h3>
+<p>Automated procedures to find good hyper parameters:</p>
+<ul>
+<li><strong>Grid search</strong>: From each hyper param, combine some
+values.</li>
+<li><strong>Random search</strong>: Randomize hyper prarams</li>
+</ul>
+<blockquote>
+<p>⚠️ : Optimizing hyper params is also a form of
+<em>overfitting</em>!</p>
+</blockquote>
+<p>Best practice:</p>
+<ol type="1">
+<li>Split off test set and do not touch it!</li>
+<li>Develop your model, optimizing hyper parameters with Random search
+in combination with cross-validation</li>
+<li>Retrain your model on all training data using the best hyper
+parameters</li>
+<li>Evaluate model on test data</li>
+</ol>
+<h3 id="classification-1">Classification</h3>
+<p>Why not use linear regression for classification?</p>
+<p>Regression models predict an exact value. Gradient descent will
+change wights to adjust to latest train data, introducing errors for
+other data.</p>
+<h4 id="logistic-and-softmax-regression">Logistic and Softmax
+regression</h4>
+<blockquote>
+<p>⚠️ : Despite the name, Logistic and Softmax are not regression
+models</p>
+</blockquote>
+<h5 id="logistic-regression">Logistic regression</h5>
+<ul>
+<li><span
+class="math inline"><em>p̂</em> = <em>σ</em>(0.25*<em>X</em><sub>1</sub>+0.125*<em>X</em><sub>2</sub>−1)</span></li>
+<li>in general: <span
+class="math inline"><em>p̂</em> = <em>h</em><sub><em>θ</em></sub>(<em>x</em>) = <em>σ</em>(<em>x</em><sup><em>T</em></sup><em>θ</em>)</span></li>
+<li>With <span class="math inline"><em>σ</em></span> = sigmoid function:
+<span class="math inline">$\sigma(t) = \frac{1}{1 + \exp(-t)}$</span>
+<ul>
+<li>&gt;0.5 if input is positive</li>
+<li>&lt;0.5 if input is negative</li>
+</ul></li>
+<li>p close to 0 or 1: data lies far from decision boundary</li>
+<li>p close to 0.5: data close to decision boundary</li>
+</ul>
+<figure>
+<img src="./img/sigmoid.png" alt="Sigmoid function" />
+<figcaption aria-hidden="true">Sigmoid function</figcaption>
+</figure>
+<p>Training logistic regression</p>
+<ol type="1">
+<li>Goal: find optimal parameters <span
+class="math inline"><em>θ̂</em></span> that defines line that best
+separates the data.</li>
+<li>Optimize a cost function</li>
+<li>Use <strong>Log loss</strong></li>
+<li>Train using gradient descent with partial derivatives</li>
+</ol>
+<h5 id="softmax-regression">Softmax regression</h5>
+<ul>
+<li>For if there is more than one class</li>
+<li>Predict a probability for each class and normalize them to sum to
+one using the Softmax</li>
+<li>The model is then trained using gradient descent with the cross
+entropy loss</li>
+</ul>
+<figure>
+<img src="./img/softmax_regression.png"
+alt="example prediction using Softmax" />
+<figcaption aria-hidden="true">example prediction using
+Softmax</figcaption>
+</figure>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Regression = predict a target value from sample’s
+feature<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
             </div>
     </div>
   </div>
