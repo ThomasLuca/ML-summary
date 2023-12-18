@@ -88,8 +88,8 @@ Attributes that can only take a limited number of values (eg: T-shirt sizes)
 Some extremely big or small features may have an abnormally large impact on the model.
 This can be solved by _rescaling_ them using the following techniques:
 
-- **Normalization** (min-max scaling): $x\_{norm} = \frac{x - min(x)}{max(x) - min(x)}$
-- **Standardization**: $x\_{stand} = \frac{x - mean(x)}{standard_deviation(x)}$
+- **Normalization** (min-max scaling): $x_{norm} = \frac{x - min(x)}{max(x) - min(x)}$
+- **Standardization**: $x_{stand} = \frac{x - mean(x)}{standard_deviation(x)}$
 
 ## 3. Classification
 
@@ -132,7 +132,7 @@ How many of the actual positives are detected?: $recall = \frac{TP}{TP+FN}$
 
 It combines the precision and recall of a model into a single metric.
 
-$F_{1} = 2 . \frac{precision . recall}{precision + recall}$
+$F_{1} = 2 . \frac{precision \cdot recall}{precision + recall}$
 
 ### Binary Classification
 
@@ -165,12 +165,12 @@ Turn multiclass into binary classification (eg: classes [green, blue, red] -> on
 ### Linear regression
 
 - **Assumption** (Inductive bias): There is a linear relationship between the input features and the target.
-- $Price = \Theta_{0} + Bedrooms * \Theta_{1}$
-  - $ \Thata_{0} $: intercept Bias
-  - $ \Thata_{1} $: slope weight
+- $Price = \theta_{0} + Bedrooms * \theta_{1}$
+  - $\theta_{0}$ : intercept Bias
+  - $\theta_{1}$ : slope weight
 - Goal: find optimal parameter that defines line that best fits the data
 - The prediction is the weighted sum of the input features with an additional bias
-- $\hat{y} = h_{\theta}(x) = \theta \cdot x $
+- $\hat{y} = h_{\theta}(x) = \theta \cdot x$
   - $\hat{y}: prediction$
   - x: input features, extended with a “1” value (as bias)
   - $\theta$: model parameters
@@ -178,6 +178,16 @@ Turn multiclass into binary classification (eg: classes [green, blue, red] -> on
 ![Linear regression vector](./img/linreg_vector.png)
 
 
-####  Linear regression training
+#### Linear regression training
+
+- Minimize some loss function that measures how good $\theta$ is (Root Mean Square Error): $RMSE = \sqrt{\sum_{i=1}^{n} \frac{(\hat{y}_{i} - y_{i})^2}{n}}$
+- Multiple options to find $\hat{\theta}$
+  - Direct “closed form” solution
+  - Gradient descent
+    - Batch
+    - Mini-batch
+    - Stochastic
+
+#### Direct solution
 
 

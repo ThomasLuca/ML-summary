@@ -1,0 +1,395 @@
+<!doctype html>
+<html >
+<head>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--[if lt IE 9]>
+                <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <!-- <link rel="stylesheet" type="text/css" href="template.css" /> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/template.css" />
+
+    <link href="https://vjs.zencdn.net/5.4.4/video-js.css" rel="stylesheet" />
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <!-- <script type='text/javascript' src='menu/js/jquery.cookie.js'></script> -->
+    <!-- <script type='text/javascript' src='menu/js/jquery.hoverIntent.minified.js'></script> -->
+    <!-- <script type='text/javascript' src='menu/js/jquery.dcjqaccordion.2.7.min.js'></script> -->
+
+    <!-- <link href="menu/css/skins/blue.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="menu/css/skins/graphite.css" rel="stylesheet" type="text/css" /> -->
+    <!-- <link href="menu/css/skins/grey.css" rel="stylesheet" type="text/css" /> -->
+  
+    <!-- <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+        
+  
+    <!-- <script src="script.js"></script> -->
+  
+    <!-- <script src="jquery.sticky-kit.js "></script> -->
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.cookie.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.hoverIntent.minified.js'></script>
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/js/jquery.dcjqaccordion.2.7.min.js'></script>
+
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/blue.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/graphite.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/menu/css/skins/grey.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/ryangrose/easy-pandoc-templates@948e28e5/css/elegant_bootstrap.css" rel="stylesheet" type="text/css" />
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/script.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/gh/diversen/pandoc-bootstrap-adaptive-template@959c3622/jquery.sticky-kit.js"></script>
+    <meta name="generator" content="pandoc" />
+  <title>summary</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+
+    
+    <div class="container">
+    <div class="row">
+            <div id="TOC" class="span3">
+        <div class="well toc">
+
+        <ul>
+        <li><a href="#machine-learning-summary"
+        id="toc-machine-learning-summary">Machine Learning summary</a>
+        <ul>
+        <li><a href="#the-ml-landscape" id="toc-the-ml-landscape">1. The
+        ML landscape</a>
+        <ul>
+        <li><a href="#ml-types" id="toc-ml-types">ML types</a></li>
+        <li><a href="#model-based-vs-instance-based-learning"
+        id="toc-model-based-vs-instance-based-learning">Model based vs
+        instance based learning</a></li>
+        <li><a href="#training-a-model"
+        id="toc-training-a-model">Training a model</a></li>
+        <li><a href="#ml-workflow" id="toc-ml-workflow">ML
+        workflow</a></li>
+        <li><a href="#problems-with-bad-datasets"
+        id="toc-problems-with-bad-datasets">Problems with bad
+        datasets</a></li>
+        </ul></li>
+        <li><a href="#end-to-end-ml-project"
+        id="toc-end-to-end-ml-project">2. End-to-end ML project</a>
+        <ul>
+        <li><a href="#workflow" id="toc-workflow">Workflow</a></li>
+        <li><a href="#exploratory-data-analysis-eda"
+        id="toc-exploratory-data-analysis-eda">Exploratory Data Analysis
+        (EDA)</a></li>
+        </ul></li>
+        <li><a href="#classification" id="toc-classification">3.
+        Classification</a>
+        <ul>
+        <li><a href="#performance-metrics"
+        id="toc-performance-metrics">Performance Metrics</a></li>
+        <li><a href="#binary-classification"
+        id="toc-binary-classification">Binary Classification</a></li>
+        <li><a href="#multiclass-classification"
+        id="toc-multiclass-classification">Multiclass
+        classification</a></li>
+        </ul></li>
+        <li><a href="#training-models" id="toc-training-models">4.
+        Training models</a>
+        <ul>
+        <li><a href="#linear-regression"
+        id="toc-linear-regression">Linear regression</a></li>
+        </ul></li>
+        </ul></li>
+        </ul>
+
+        </div>
+      </div>
+            <div class="span9">
+
+      
+      <h1 id="machine-learning-summary">Machine Learning summary</h1>
+<h2 id="the-ml-landscape">1. The ML landscape</h2>
+<h3 id="ml-types">ML types</h3>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 32%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Supervised</th>
+<th>Unsupervised</th>
+<th>Reinforcement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Labeled data</td>
+<td>No labels</td>
+<td>Decision process</td>
+</tr>
+<tr class="even">
+<td>Direct feedback</td>
+<td>No feedback</td>
+<td>Reward system</td>
+</tr>
+<tr class="odd">
+<td>Predict outcome/future</td>
+<td>Find hidden structures in data</td>
+<td>Learn series of actions</td>
+</tr>
+<tr class="even">
+<td>eg: Classification or regression[^1]</td>
+<td>eg: Anomaly detection</td>
+<td>eg: alphago</td>
+</tr>
+</tbody>
+</table>
+<p>[^1]: Regression = predict a target value from sample’s feature</p>
+<h3 id="model-based-vs-instance-based-learning">Model based vs instance
+based learning</h3>
+<table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model-based</th>
+<th>Instance-based</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Evaluate a mathematical function on the unseen instance</td>
+<td>Measure similarities between unseen instance and training
+instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="training-a-model">Training a model</h3>
+<ol type="1">
+<li>Choose a parameterized model family
+(<code>life satisfaction = θ0 + θ1 ∙ GDP_per_capita</code>)</li>
+<li>Find parameter values that maximize a fitness function or minimize a
+cost function</li>
+</ol>
+<h4 id="testing-and-validation">Testing and validation</h4>
+<figure>
+<img src="./img/testing_train_test.png"
+alt="train using train and test data" />
+<figcaption aria-hidden="true">train using train and test
+data</figcaption>
+</figure>
+<figure>
+<img src="./img/testing_train_test_val_png"
+alt="train using train, test and validation data" />
+<figcaption aria-hidden="true">train using train, test and validation
+data</figcaption>
+</figure>
+<h4 id="overfitting">Overfitting</h4>
+<p>Model doesn’t generalize enough. It learns your specific training
+data but underperforms on new data.</p>
+<p>Possible cures:</p>
+<ul>
+<li>Use a bigger dataset</li>
+<li>Simplify model</li>
+<li>Reduce the noice in the dataset</li>
+</ul>
+<h4 id="underfitting">Underfitting</h4>
+<p>When the performance is even bad on the training data</p>
+<p>Possible cures:</p>
+<ul>
+<li>Increase number of parameters</li>
+<li>Add more features</li>
+<li>Reduce the regularization parameters</li>
+</ul>
+<h3 id="ml-workflow">ML workflow</h3>
+<figure>
+<img src="./img/ml_workflow.png" alt="Machine learning workflow" />
+<figcaption aria-hidden="true">Machine learning workflow</figcaption>
+</figure>
+<h3 id="problems-with-bad-datasets">Problems with bad datasets</h3>
+<p><strong>Sampling bias</strong>: Dataset can be non-representative if
+it has an underrepresented classes.</p>
+<p>Garbage in == Garbage out: Bad dataset is guaranteed to lead to a bad
+(trained) model.</p>
+<h2 id="end-to-end-ml-project">2. End-to-end ML project</h2>
+<h3 id="workflow">Workflow</h3>
+<figure>
+<img src="./img/project_workflow.png" alt="Project workflow" />
+<figcaption aria-hidden="true">Project workflow</figcaption>
+</figure>
+<h3 id="exploratory-data-analysis-eda">Exploratory Data Analysis
+(EDA)</h3>
+<ol type="1">
+<li>Get an initial feel of the data</li>
+<li>Visualize and gain insight</li>
+<li>Prepare the data</li>
+</ol>
+<h4 id="what-to-do-with-missing-values">What to do with missing
+values</h4>
+<ul>
+<li>Remove entry</li>
+<li><strong>Imputation</strong>: replace by mean, median, 0, …</li>
+</ul>
+<h4 id="categorical-attributes">Categorical attributes</h4>
+<p>Attributes that can only take a limited number of values (eg: T-shirt
+sizes)</p>
+<p><strong>one-hot-encoding</strong>: Use on categorical variables to
+transform them into a format the model can understand.</p>
+<h4 id="features-scaling">Features scaling</h4>
+<p>Some extremely big or small features may have an abnormally large
+impact on the model. This can be solved by <em>rescaling</em> them using
+the following techniques:</p>
+<ul>
+<li><strong>Normalization</strong> (min-max scaling): <span
+class="math inline">$x_{norm} = \frac{x - min(x)}{max(x) -
+min(x)}$</span></li>
+<li><strong>Standardization</strong>: <span
+class="math inline">$x_{stand} = \frac{x -
+mean(x)}{standard_deviation(x)}$</span></li>
+</ul>
+<h2 id="classification">3. Classification</h2>
+<p>Classification always happens by <em>supervised learning</em>
+models</p>
+<h3 id="performance-metrics">Performance Metrics</h3>
+<h4 id="accuracy">Accuracy</h4>
+<p><strong>Accuracy</strong>: the percentage of predicted labels that
+corresponds with the ground truth label.</p>
+<p><span class="math inline">$Accuracy = \frac{TP +
+TN}{Total}$</span></p>
+<h4 id="confusion-matrix">Confusion Matrix</h4>
+<p>Columns are predicted labels, rows are true labels</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Automobile</th>
+<th>No Automobile</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Automobile</td>
+<td>True Positive</td>
+<td>False Negative</td>
+</tr>
+<tr class="even">
+<td>No Automobile</td>
+<td>False Positive</td>
+<td>True Negative</td>
+</tr>
+</tbody>
+</table>
+<h4 id="precision-and-recall">Precision and recall</h4>
+<p>Accuracy of the positive predictions: <span
+class="math inline">$precision = \frac{TP}{TP+FP}$</span></p>
+<p>How many of the actual positives are detected?: <span
+class="math inline">$recall = \frac{TP}{TP+FN}$</span></p>
+<p><strong>When do we want high precision?</strong></p>
+<ul>
+<li>When false positives are costly (eg: medical predictions, fraud
+detection). You really don’t want falsely flag a condition.</li>
+<li>In imbalanced datasets where the majority class is the negative
+one.</li>
+</ul>
+<p><strong>When do we want high accuracy?</strong></p>
+<ul>
+<li>False negatives are costly (eg: cancer detection or nsfw
+filters)</li>
+<li>Information retrieval: recall helps ensure that all relevant
+documents or information are retrieved</li>
+</ul>
+<h4 id="f1-score">F1 score</h4>
+<p>It combines the precision and recall of a model into a single
+metric.</p>
+<p><span class="math inline">$F_{1} = 2 . \frac{precision \cdot
+recall}{precision + recall}$</span></p>
+<h3 id="binary-classification">Binary Classification</h3>
+<p><strong>Binary</strong>: Only two classes.</p>
+<ul>
+<li><strong>Decision boundary</strong>: hypersurface that partitions
+underlying vector space into two sets, one for each class.</li>
+<li><strong>Score/Class Probability</strong>: <span
+class="math inline">$\hat{y}(x^{(i)}) = \begin{cases} +1   if
+h_{\theta}(x^{(i)}) \geq T \\ -1   if h_{\theta}(x^{(i)}) &lt; T
+\end{cases}$</span> (T = threshold as hyperparam)</li>
+</ul>
+<h4 id="choosing-a-threshold">Choosing a threshold</h4>
+<h5 id="precision-vs-recall-choosing-a-threshold">Precision vs Recall
+(Choosing a threshold)</h5>
+<figure>
+<img src="./img/precision_vs_recall.png" alt="Precision vs recall" />
+<figcaption aria-hidden="true">Precision vs recall</figcaption>
+</figure>
+<h5 id="roc-curve-and-area-under-the-curve-auc">ROC curve and Area Under
+The Curve (AUC)</h5>
+<figure>
+<img src="./img/AUC.png" alt="Area under curve" />
+<figcaption aria-hidden="true">Area under curve</figcaption>
+</figure>
+<h3 id="multiclass-classification">Multiclass classification</h3>
+<h4 id="one-vs-rest">One-vs-Rest</h4>
+<p>Turn multiclass into binary classification (eg: classes [green, blue,
+red] -&gt; one-vs-rest: [green, rest[blue, red]])</p>
+<ul>
+<li>Classification based on voting</li>
+<li>NumClass * (NumClass – 1)/2 classifiers to train</li>
+</ul>
+<h2 id="training-models">4. Training models</h2>
+<h3 id="linear-regression">Linear regression</h3>
+<ul>
+<li><strong>Assumption</strong> (Inductive bias): There is a linear
+relationship between the input features and the target.</li>
+<li><span
+class="math inline"><em>P</em><em>r</em><em>i</em><em>c</em><em>e</em> = <em>θ</em><sub>0</sub> + <em>B</em><em>e</em><em>d</em><em>r</em><em>o</em><em>o</em><em>m</em><em>s</em> * <em>θ</em><sub>1</sub></span>
+<ul>
+<li><span class="math inline"><em>θ</em><sub>0</sub></span> : intercept
+Bias</li>
+<li><span class="math inline"><em>θ</em><sub>1</sub></span> : slope
+weight</li>
+</ul></li>
+<li>Goal: find optimal parameter that defines line that best fits the
+data</li>
+<li>The prediction is the weighted sum of the input features with an
+additional bias</li>
+<li><span
+class="math inline"><em>ŷ</em> = <em>h</em><sub><em>θ</em></sub>(<em>x</em>) = <em>θ</em> ⋅ <em>x</em></span>
+<ul>
+<li><span
+class="math inline"><em>ŷ</em> : <em>p</em><em>r</em><em>e</em><em>d</em><em>i</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em></span></li>
+<li>x: input features, extended with a “1” value (as bias)</li>
+<li><span class="math inline"><em>θ</em></span>: model parameters</li>
+</ul></li>
+</ul>
+<figure>
+<img src="./img/linreg_vector.png" alt="Linear regression vector" />
+<figcaption aria-hidden="true">Linear regression vector</figcaption>
+</figure>
+<h4 id="linear-regression-training">Linear regression training</h4>
+<ul>
+<li>Minimize some loss function that measures how good <span
+class="math inline"><em>θ</em></span> is (Root Mean Square Error): <span
+class="math inline">$RMSE = \sqrt{\sum_{i=1}^{n} \frac{(\hat{y}_{i} -
+y_{i})^2}{n}}$</span></li>
+<li>Multiple options to find <span class="math inline"><em>θ̂</em></span>
+<ul>
+<li>Direct “closed form” solution</li>
+<li>Gradient descent
+<ul>
+<li>Batch</li>
+<li>Mini-batch</li>
+<li>Stochastic</li>
+</ul></li>
+</ul></li>
+</ul>
+<h4 id="direct-solution">Direct solution</h4>
+            </div>
+    </div>
+  </div>
+  <script src="https://vjs.zencdn.net/5.4.4/video.js"></script>
+
+</body>
+</html>
