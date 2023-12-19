@@ -157,6 +157,12 @@
         id="toc-are-decision-trees-any-good">Are decision trees any
         good?</a></li>
         </ul></li>
+        <li><a href="#ensembles" id="toc-ensembles">7. Ensembles</a>
+        <ul>
+        <li><a href="#voting" id="toc-voting">Voting</a></li>
+        <li><a href="#boosting" id="toc-boosting">Boosting</a></li>
+        <li><a href="#stacking" id="toc-stacking">Stacking</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -911,7 +917,8 @@ important. It limits the freedom of:</p>
 <ul>
 <li>Min_samples_leaf</li>
 <li>Min_weight_fraction_leaf</li>
-<li>Max_height _ Max_leaf_node</li>
+<li>Max_height</li>
+<li>Max_leaf_node</li>
 </ul>
 <h3 id="are-decision-trees-any-good">Are decision trees any good?</h3>
 <ul>
@@ -928,6 +935,81 @@ straight lines perpendicular to feature axis)</li>
 <li>❌: Relatively inaccurate</li>
 <li>❌: Prone to overfitting</li>
 </ul>
+<h2 id="ensembles">7. Ensembles</h2>
+<ul>
+<li>Combine many weak models into one strong model.</li>
+</ul>
+<p>Procedure:</p>
+<ol type="1">
+<li>Make sure all models learn different things</li>
+<li>Combine individual predictions</li>
+</ol>
+<p>Different techniques: Voting, Boosting and Stacking</p>
+<blockquote>
+<p>💡: Decision trees are a good candidate for ensembles, because they
+can completely change if the data change a bit. This is a good quality
+for ensembles.</p>
+</blockquote>
+<h3 id="voting">Voting</h3>
+<p>Train models on slightly different datasets and combine them using
+average or voting</p>
+<p>Methods to make different versions:</p>
+<ul>
+<li><strong>Bagging</strong>: sample from the dataset with
+replacement</li>
+<li><strong>Pasting</strong>: sample without replacement</li>
+<li><strong>Random subspaces</strong>: use different subsets of the
+features</li>
+<li><strong>Random patches</strong>: select both random data points and
+random feature subsets</li>
+</ul>
+<h3 id="boosting">Boosting</h3>
+<p>Train different models that correct each other’s mistakes.</p>
+<p>Unlike voting, training is sequential and can not be performed in
+parallel.</p>
+<h4 id="adaboost">Adaboost</h4>
+<p>Each sequential model focuses more on the data points that had
+incorrect predictions for previous models</p>
+<ul>
+<li>Two types of weights:
+<ul>
+<li><strong>Instance weight</strong> <span
+class="math inline"><em>w</em><sup>(<em>i</em>)</sup></span>: Weight of
+each sample, focuses on samples that were misclassified by the previous
+models</li>
+<li><strong>Predictor weight</strong> <span
+class="math inline"><em>α</em><sup>(<em>i</em>)</sup></span>: Weight of
+each model, used to calculate the final prediction</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li>Initialize every weight to 1/m</li>
+<li>Train the model (calculate its weighted error rate)</li>
+<li>Calculate the predictor wight</li>
+<li>Update the instance weights and normalize them</li>
+<li>Repeat 2-4 until max number of predictors is reached or sufficient
+performance</li>
+<li>Calculate weighted prediction of the different models</li>
+</ol>
+<h4 id="gradient-boost">Gradient boost</h4>
+<p>Each sequential model tries to predict the residual error of the
+previous models.</p>
+<ul>
+<li>The next predictor tries to predict the <strong>residual
+error</strong> made by previous predictors</li>
+<li>Final output is the sum of the predictions of the individual
+models</li>
+</ul>
+<h3 id="stacking">Stacking</h3>
+<p>Train a model using predictions of other models as input. Meaning
+that the model will combine predictions of other models.</p>
+<ol type="1">
+<li>Split train set in two</li>
+<li>Train different models on the first part</li>
+<li>Extract the predictions of the models for the second part =
+<strong>Blending data set</strong></li>
+<li>Train a model on the predictions of the first models</li>
+</ol>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

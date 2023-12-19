@@ -495,7 +495,7 @@ Decision trees, too, can overfit. Therefor regularization is important. It limit
 - Min_samples_leaf
 - Min_weight_fraction_leaf
 - Max_height
-_ Max_leaf_node
+- Max_leaf_node
 
 
 ### Are decision trees any good?
@@ -511,4 +511,64 @@ _ Max_leaf_node
 - ❌: Relatively inaccurate
 - ❌: Prone to overfitting
 
+## 7. Ensembles
+
+- Combine many weak models into one strong model.
+
+Procedure:
+
+1. Make sure all models learn different things
+2. Combine individual predictions
+
+Different techniques: Voting, Boosting and Stacking
+
+> 💡: Decision trees are a good candidate for ensembles, because they can completely change if the data change a bit. This is a good quality for ensembles.
+
+### Voting
+
+Train models on slightly different datasets and combine them using average or voting
+
+Methods to make different versions:
+
+- **Bagging**: sample from the dataset with replacement
+- **Pasting**: sample without replacement
+- **Random subspaces**: use different subsets of the features
+- **Random patches**: select both random data points and random feature subsets
+
+### Boosting
+
+Train different models that correct each other's mistakes. 
+
+Unlike voting, training is sequential and can not be performed in parallel.
+
+#### Adaboost
+
+Each sequential model focuses more on the data points that had incorrect predictions for previous models
+
+- Two types of weights:
+  - **Instance weight** $w^{(i)}$: Weight of each sample, focuses on samples that were misclassified by the previous models
+  - **Predictor weight** $\alpha^{(i)}$: Weight of each model, used to calculate the final prediction
+
+1. Initialize every weight to 1/m
+2. Train the model (calculate its weighted error rate)
+3. Calculate the predictor wight
+4. Update the instance weights and normalize them 
+5. Repeat 2-4 until max number of predictors is reached or sufficient performance
+6. Calculate weighted prediction of the different models
+
+#### Gradient boost
+
+Each sequential model tries to predict the residual error of the previous models.
+
+- The next predictor tries to predict the **residual error** made by previous predictors
+- Final output is the sum of the predictions of the individual models
+
+### Stacking
+
+Train a model using predictions of other models as input. Meaning that the model will combine predictions of other models.
+
+1. Split train set in two
+2. Train different models on the first part
+3. Extract the predictions of the models for the second part = **Blending data set**
+4. Train a model on the predictions of the first models
 
