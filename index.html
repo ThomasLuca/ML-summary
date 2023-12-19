@@ -119,6 +119,25 @@
         <li><a href="#classification-1"
         id="toc-classification-1">Classification</a></li>
         </ul></li>
+        <li><a href="#super-vector-machines-linear-classification"
+        id="toc-super-vector-machines-linear-classification">5. Super
+        Vector Machines: Linear classification</a>
+        <ul>
+        <li><a href="#largest-margin-classifier"
+        id="toc-largest-margin-classifier">Largest margin
+        classifier</a></li>
+        <li><a href="#soft-margin-classification"
+        id="toc-soft-margin-classification">Soft margin
+        classification</a></li>
+        <li><a href="#hard-margin-vs-soft-margin"
+        id="toc-hard-margin-vs-soft-margin">Hard margin vs soft
+        margin</a></li>
+        <li><a href="#solving-svms" id="toc-solving-svms">Solving
+        SVM’s</a></li>
+        <li><a href="#svm-for-non-linear-classification"
+        id="toc-svm-for-non-linear-classification">SVM for non-linear
+        classification</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -635,6 +654,140 @@ alt="example prediction using Softmax" />
 <figcaption aria-hidden="true">example prediction using
 Softmax</figcaption>
 </figure>
+<h2 id="super-vector-machines-linear-classification">5. Super Vector
+Machines: Linear classification</h2>
+<ul>
+<li>Objective: Learn discriminating function g(x) that separates samples
+of two categories.</li>
+<li>Inductive Bias: g(x) is linear in its features (line in 3D, plane in
+3D)
+<ul>
+<li><span
+class="math inline"><em>g</em>(<em>x</em>) = <em>w</em><sub>1</sub><em>x</em><sub>1</sub> + <em>w</em><sub>2</sub><em>x</em><sub>2</sub> + <em>b</em> = <em>w</em> ⋅ <em>x</em> + <em>b</em> = <em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em></span>
+<ul>
+<li>b = bias term</li>
+<li>w = direction of discriminating function</li>
+</ul></li>
+<li>Decision rule:
+<ul>
+<li><span
+class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> ≥ 0</span>
+-&gt; Sample belongs to class 1</li>
+<li><span
+class="math inline"><em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> &lt; 0</span>
+-&gt; Sample belongs to class 2</li>
+</ul></li>
+</ul></li>
+</ul>
+<figure>
+<img src="./img/linear_classification.png"
+alt="Linear classification in 2D" />
+<figcaption aria-hidden="true">Linear classification in 2D</figcaption>
+</figure>
+<h3 id="largest-margin-classifier">Largest margin classifier</h3>
+<p>Update decision rule to include margin:</p>
+<ul>
+<li><span
+class="math inline"><em>g</em>(<em>x</em>) = <em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> ≥ 1</span>
+-&gt; Sample belongs to class 1</li>
+<li><span
+class="math inline"><em>g</em>(<em>x</em>) = <em>w</em><sup><em>T</em></sup><em>x</em> + <em>b</em> ≤  − 1</span>
+-&gt; Sample belongs to class 2</li>
+<li>Width of street becomes: <span class="math inline">$\frac{2}{\lVert
+w \lVert}$</span></li>
+<li>Margin functions:
+<ul>
+<li><span
+class="math inline"><em>g</em>(<em>x</em><sub>+</sub>) = <em>w</em><sup><em>T</em></sup><em>x</em><sub>+</sub> + <em>b</em> = 1</span></li>
+<li><span
+class="math inline"><em>g</em>(<em>x</em><sub>−</sub>) = <em>w</em><sup><em>T</em></sup><em>x</em><sub>−</sub> + <em>b</em> =  − 1</span></li>
+</ul></li>
+</ul>
+<p>To maximize the street width, we need to minimize <span
+class="math inline">∥<em>w</em>∥</span>. For math convenience, we will
+minimize <span class="math inline">$\frac{1}{2} \lVert w \lVert
+^{2}$</span></p>
+<figure>
+<img src="./img/lin_classification_margin.png"
+alt="Linear classification with margins" />
+<figcaption aria-hidden="true">Linear classification with
+margins</figcaption>
+</figure>
+<h4
+id="importance-of-standardization-before-margin-classification">Importance
+of standardization before margin classification</h4>
+<p>When not standardized, the distance calculation is dominated by the
+feature with the largest scale, therefor it is necessary to
+scale/standardize all values using the following formula: <span
+class="math inline">$x_{0, scaled} = \frac{x_{0} -
+\mu_{x_{0}}}{\sigma_{x_{0}}}$</span></p>
+<h3 id="soft-margin-classification">Soft margin classification</h3>
+<p>Allows for: - misclassification (can deal with outliers) - items in
+the margin</p>
+<p>Tolerates some errors: <span
+class="math inline"><em>ζ</em><sup>(<em>i</em>)</sup> ≥ 0</span></p>
+<p><span
+class="math inline"><em>g</em>(<em>x</em><sup><em>i</em></sup>) = <em>t</em><sup>(<em>i</em>)</sup>(<em>w</em><sup><em>T</em></sup><em>x</em><sup>(<em>i</em>)</sup>+<em>b</em>) ≥ 1 − <em>ζ</em><sup>(<em>i</em>)</sup></span></p>
+<figure>
+<img src="./img/lin_class_margin_error.png"
+alt="Linear classification with margin error" />
+<figcaption aria-hidden="true">Linear classification with margin
+error</figcaption>
+</figure>
+<h3 id="hard-margin-vs-soft-margin">Hard margin vs soft margin</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Hard</th>
+<th>Soft</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>small margin</td>
+<td>bigger margin</td>
+</tr>
+<tr class="even">
+<td>more accurate</td>
+<td>less accurate</td>
+</tr>
+</tbody>
+</table>
+<h3 id="solving-svms">Solving SVM’s</h3>
+<p><span class="math inline">$w = \sum_{i=1}^{n}
+\alpha^{(i)}\,t^{(i)}\,x^{(i)} = \sum_{x^{(i)}}
+\alpha^{(i)}\,t^{(i)}\,x^{(i)} + \sum_{x^{(i)}}
+C\,t^{(i)}\,x^{(i)}$</span></p>
+<p>Meaning: w = on the margin + in-margin or misclassified</p>
+<ul>
+<li><span
+class="math inline"><em>α</em><sup>(<em>i</em>)</sup> = 0</span>: if
+<span class="math inline"><em>x</em><sup>(<em>i</em>)</sup></span> is on
+the correct side of the boundary and outside margin</li>
+<li><span
+class="math inline"><em>α</em><sup>(<em>i</em>)</sup> = <em>C</em></span>:
+if <span class="math inline"><em>x</em><sup>(<em>i</em>)</sup></span> is
+on the wrong side of the boundary or within the margin</li>
+<li><span
+class="math inline">0 &lt; <em>α</em><sup>(<em>i</em>)</sup> &lt; <em>C</em></span>:
+if <span class="math inline"><em>x</em><sup>(<em>i</em>)</sup></span> is
+exactly on the margin</li>
+</ul>
+<h3 id="svm-for-non-linear-classification">SVM for non-linear
+classification</h3>
+<p>Example of non-linear data</p>
+<figure>
+<img src="./img/non-linear_data.png" alt="Non linear data graphs" />
+<figcaption aria-hidden="true">Non linear data graphs</figcaption>
+</figure>
+<h4 id="the-kernel-trick">The kernel trick</h4>
+<p>It is possible to project data to higher dimension, and solve using
+linear classification.</p>
+<blockquote>
+<p>❗: Due to hidden constants, the complexity of the solver scales
+badly with the number of features, so the generalized Lagrangian is no
+longer that efficient.</p>
+</blockquote>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

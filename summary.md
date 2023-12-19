@@ -342,3 +342,82 @@ Training logistic regression
 
 ![example prediction using Softmax](./img/softmax_regression.png)
 
+## 5. Super Vector Machines: Linear classification
+
+- Objective: Learn discriminating function g(x) that separates samples of two categories.
+- Inductive Bias: g(x) is linear in its features (line in 3D, plane in 3D)
+  - $g(x) = w_{1}x_{1} + w_{2}x_{2} + b = w \cdot x + b = w^{T}x + b$
+    - b = bias term
+    - w = direction of discriminating function
+  - Decision rule:
+    - $w^{T}x + b \geq 0$ -> Sample belongs to class 1
+    - $w^{T}x + b < 0$ -> Sample belongs to class 2
+
+![Linear classification in 2D](./img/linear_classification.png)
+
+### Largest margin classifier
+
+Update decision rule to include margin:
+
+- $g(x) = w^{T}x + b \geq 1$ -> Sample belongs to class 1
+- $g(x) = w^{T}x + b \leq -1$ -> Sample belongs to class 2
+- Width of street becomes: $\frac{2}{\lVert w \lVert}$
+- Margin functions:
+  - $g(x_{+}) = w^{T}x_{+} + b = 1$
+  - $g(x_{-}) = w^{T}x_{-} + b = -1$
+
+To maximize the street width, we need to minimize $\lVert w \lVert$. For math convenience, we will minimize $\frac{1}{2} \lVert w \lVert ^{2}$
+
+![Linear classification with margins](./img/lin_classification_margin.png)
+
+#### Importance of standardization before margin classification
+
+When not standardized, the distance calculation is dominated by the feature with the largest scale, therefor it is necessary to scale/standardize all values using the following formula:
+$x_{0, scaled} = \frac{x_{0} - \mu_{x_{0}}}{\sigma_{x_{0}}}$
+
+### Soft margin classification
+
+Allows for:
+- misclassification (can deal with outliers)
+- items in the margin
+
+Tolerates some errors: $\zeta^{(i)} \geq 0$
+
+$g(x^{i}) = t^{(i)}(w^{T}x^{(i)} + b) \geq 1 - \zeta^{(i)}$
+
+![Linear classification with margin error](./img/lin_class_margin_error.png)
+
+### Hard margin vs soft margin
+
+| Hard          | Soft          |
+|---------------| ------------- |
+| small margin  | bigger margin |
+| more accurate | less accurate |
+
+### Solving SVM's
+
+$w = \sum_{i=1}^{n} \alpha^{(i)}\,t^{(i)}\,x^{(i)} = \sum_{x^{(i)}} \alpha^{(i)}\,t^{(i)}\,x^{(i)} + \sum_{x^{(i)}} C\,t^{(i)}\,x^{(i)}$
+
+Meaning: w = on the margin + in-margin or misclassified
+
+- $\alpha^{(i)} = 0$: if $x^{(i)}$ is on the correct side of the boundary and outside margin
+- $\alpha^{(i)} = C$: if $x^{(i)}$ is on the wrong side of the boundary or within the margin
+- $0 < \alpha^{(i)} < C$: if $x^{(i)}$ is exactly on the margin
+
+### SVM for non-linear classification
+
+Example of non-linear data
+
+![Non linear data graphs](./img/non-linear_data.png)
+
+#### The kernel trick 
+
+It is possible to project data to higher dimension, and solve using linear classification.
+
+> ❗: Due to hidden constants, the complexity of the solver scales badly with the number of features, so the generalized Lagrangian is no longer that efficient.
+
+
+
+
+
+
