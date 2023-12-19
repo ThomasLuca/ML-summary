@@ -416,8 +416,99 @@ It is possible to project data to higher dimension, and solve using linear class
 
 > ❗: Due to hidden constants, the complexity of the solver scales badly with the number of features, so the generalized Lagrangian is no longer that efficient.
 
+## 6. Decision Trees
+
+Break down a decision on a sequence of smaller decisions, each based on a single feature.
+
+Example:
+
+```text
+X1 = Age
+X2 = Sex
+X3 = Cholesterol
+
+Y = Patient has heart disease
+
+-> Age > 60?
+        ├ yes -> Cholesterol > 300?
+        │                ├ yes  -> Y = 1
+        │                └ No   -> Y = 0
+        └ No -> Sex = Male?
+                         ├ yes  -> ...
+                         └ No   -> Y = 0
+```
+
+### Decision trees for classification vs regression
+
+| Classification                                             | Regression                                              |
+|------------------------------------------------------------|---------------------------------------------------------|
+| Predict class members                                      |  Predict continuous value                               |
+| Leaves store class probabilities                           | Leaves store values                                     |
+| Internal nodes define a split of the remaining data points | All items in the smae subspace have the same prediction |
+
+### Building a decision tree
+
+1. Given a dataset with features X and labels Y, split data in two by asking questions
+2. Question = compare one feature with a threshold
+3. Iteratively split two subsets again by asking another question
+4. Repeat until no data left or tree has certain hight
+
+### CART (classification and regression trees) algorithm
+
+> ❗: High probability for a practical question on the exam!
+
+1. Loop over all features
+2. Pick a threshold
+3. Split data points in two based on this threshold
+4. Measure hog good split is with a **cost function**
+5. Pick best split
+6. Repeat until split is empty or until tree height is reached
+
+Cost function: $J(k, t_{k}) = \frac{m_{left}}{m}\,G_{left} + \frac{m_{right}}{m}\,G_{right}$
+
+* G = cost (Gini impurity)
+* k = different classes
+* $t_{k}$ = Node
+* m = total number of instances in a node before the split
+
+Gini impurity = $1-\sum_{i=1}^{C}(p_{i})^{2}$
+
+* C = number of classes
+* $p_{i}$ = fraction of data points that belong to class C in the subset
+
+![Cart exercise example](./img/CART_example.png)
+
+#### Entropy
+
+Instead of the *Gini impurity* we can also use Entropy
+
+**Entropy**
+: Average level of "information", inherent to the variable's possible outcome
+
+In decision tree, entropy is zero if a particular node only contains samples of a single class.
 
 
+### Regularization
 
+Decision trees, too, can overfit. Therefor regularization is important. It limits the freedom of:
+
+- Min_samples_leaf
+- Min_weight_fraction_leaf
+- Max_height
+_ Max_leaf_node
+
+
+### Are decision trees any good?
+
+- ✅: Easy to understand
+- ✅: Can model non-linear data
+- ✅: Whitebox model (eg: useful for medical prediction to know what influenced the diagnosis prediction)
+- ✅: Easy to implement
+- ✅: Allows to determine feature importance
+- ✅: Supports multiple outputs
+- ❌: Unstable (small change in data an drastically change model)
+- ❌: All decisions are made by orthogonal decision boundaries (only straight lines perpendicular to feature axis)
+- ❌: Relatively inaccurate
+- ❌: Prone to overfitting
 
 

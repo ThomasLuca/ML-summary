@@ -138,6 +138,25 @@
         id="toc-svm-for-non-linear-classification">SVM for non-linear
         classification</a></li>
         </ul></li>
+        <li><a href="#decision-trees" id="toc-decision-trees">6.
+        Decision Trees</a>
+        <ul>
+        <li><a href="#decision-trees-for-classification-vs-regression"
+        id="toc-decision-trees-for-classification-vs-regression">Decision
+        trees for classification vs regression</a></li>
+        <li><a href="#building-a-decision-tree"
+        id="toc-building-a-decision-tree">Building a decision
+        tree</a></li>
+        <li><a
+        href="#cart-classification-and-regression-trees-algorithm"
+        id="toc-cart-classification-and-regression-trees-algorithm">CART
+        (classification and regression trees) algorithm</a></li>
+        <li><a href="#regularization"
+        id="toc-regularization">Regularization</a></li>
+        <li><a href="#are-decision-trees-any-good"
+        id="toc-are-decision-trees-any-good">Are decision trees any
+        good?</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -788,6 +807,127 @@ linear classification.</p>
 badly with the number of features, so the generalized Lagrangian is no
 longer that efficient.</p>
 </blockquote>
+<h2 id="decision-trees">6. Decision Trees</h2>
+<p>Break down a decision on a sequence of smaller decisions, each based
+on a single feature.</p>
+<p>Example:</p>
+<pre class="text"><code>X1 = Age
+X2 = Sex
+X3 = Cholesterol
+
+Y = Patient has heart disease
+
+-&gt; Age &gt; 60?
+        ├ yes -&gt; Cholesterol &gt; 300?
+        │                ├ yes  -&gt; Y = 1
+        │                └ No   -&gt; Y = 0
+        └ No -&gt; Sex = Male?
+                         ├ yes  -&gt; ...
+                         └ No   -&gt; Y = 0</code></pre>
+<h3 id="decision-trees-for-classification-vs-regression">Decision trees
+for classification vs regression</h3>
+<table>
+<colgroup>
+<col style="width: 51%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>Regression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Predict class members</td>
+<td>Predict continuous value</td>
+</tr>
+<tr class="even">
+<td>Leaves store class probabilities</td>
+<td>Leaves store values</td>
+</tr>
+<tr class="odd">
+<td>Internal nodes define a split of the remaining data points</td>
+<td>All items in the smae subspace have the same prediction</td>
+</tr>
+</tbody>
+</table>
+<h3 id="building-a-decision-tree">Building a decision tree</h3>
+<ol type="1">
+<li>Given a dataset with features X and labels Y, split data in two by
+asking questions</li>
+<li>Question = compare one feature with a threshold</li>
+<li>Iteratively split two subsets again by asking another question</li>
+<li>Repeat until no data left or tree has certain hight</li>
+</ol>
+<h3 id="cart-classification-and-regression-trees-algorithm">CART
+(classification and regression trees) algorithm</h3>
+<blockquote>
+<p>❗: High probability for a practical question on the exam!</p>
+</blockquote>
+<ol type="1">
+<li>Loop over all features</li>
+<li>Pick a threshold</li>
+<li>Split data points in two based on this threshold</li>
+<li>Measure hog good split is with a <strong>cost function</strong></li>
+<li>Pick best split</li>
+<li>Repeat until split is empty or until tree height is reached</li>
+</ol>
+<p>Cost function: <span class="math inline">$J(k, t_{k}) =
+\frac{m_{left}}{m}\,G_{left} +
+\frac{m_{right}}{m}\,G_{right}$</span></p>
+<ul>
+<li>G = cost (Gini impurity)</li>
+<li>k = different classes</li>
+<li><span class="math inline"><em>t</em><sub><em>k</em></sub></span> =
+Node</li>
+<li>m = total number of instances in a node before the split</li>
+</ul>
+<p>Gini impurity = <span
+class="math inline">$1-\sum_{i=1}^{C}(p_{i})^{2}$</span></p>
+<ul>
+<li>C = number of classes</li>
+<li><span class="math inline"><em>p</em><sub><em>i</em></sub></span> =
+fraction of data points that belong to class C in the subset</li>
+</ul>
+<figure>
+<img src="./img/CART_example.png" alt="Cart exercise example" />
+<figcaption aria-hidden="true">Cart exercise example</figcaption>
+</figure>
+<h4 id="entropy">Entropy</h4>
+<p>Instead of the <em>Gini impurity</em> we can also use Entropy</p>
+<dl>
+<dt><strong>Entropy</strong></dt>
+<dd>
+Average level of “information”, inherent to the variable’s possible
+outcome
+</dd>
+</dl>
+<p>In decision tree, entropy is zero if a particular node only contains
+samples of a single class.</p>
+<h3 id="regularization">Regularization</h3>
+<p>Decision trees, too, can overfit. Therefor regularization is
+important. It limits the freedom of:</p>
+<ul>
+<li>Min_samples_leaf</li>
+<li>Min_weight_fraction_leaf</li>
+<li>Max_height _ Max_leaf_node</li>
+</ul>
+<h3 id="are-decision-trees-any-good">Are decision trees any good?</h3>
+<ul>
+<li>✅: Easy to understand</li>
+<li>✅: Can model non-linear data</li>
+<li>✅: Whitebox model (eg: useful for medical prediction to know what
+influenced the diagnosis prediction)</li>
+<li>✅: Easy to implement</li>
+<li>✅: Allows to determine feature importance</li>
+<li>✅: Supports multiple outputs</li>
+<li>❌: Unstable (small change in data an drastically change model)</li>
+<li>❌: All decisions are made by orthogonal decision boundaries (only
+straight lines perpendicular to feature axis)</li>
+<li>❌: Relatively inaccurate</li>
+<li>❌: Prone to overfitting</li>
+</ul>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
