@@ -1066,9 +1066,13 @@ eigenvalue) (1st principal component)</li>
 principal components (2nd principal component)</li>
 <li>etc…</li>
 </ol>
-<p><img src="./img/linear_dimension_reduction_PCA.png"
+<figure>
+<img src="./img/linear_dimension_reduction_PCA.png"
 alt="Example: projection on purple line will lead to larger variation" />
-<strong>How to find the optimal components?</strong></p>
+<figcaption aria-hidden="true">Example: projection on purple line will
+lead to larger variation</figcaption>
+</figure>
+<p><strong>How to find the optimal components?</strong></p>
 <p>Calculate the normalized eigenvectors of the covariancematrix.
 (matrix that displays the covariance between every pair of variables in
 a dataset)</p>
@@ -1083,7 +1087,7 @@ length</li>
 </ol>
 <p><strong>Covariance</strong>: <span class="math inline">$\sigma(x_{1},
 x_{2}) = \frac{1}{m-1} \sum_{i=1}^{m}(x_{1}^{(i)} -
-\overline{x_{1}})\,(x_{2}^{(i)} - \overline{x_{2}})$</span>)</p>
+\overline{x_{1}})\,(x_{2}^{(i)} - \overline{x_{2}})$</span></p>
 <p>Covariance Matrix: <span
 class="math inline"><em>M</em> = <em>U</em> ⋅ ∑ ⋅ <em>V</em><sup>*</sup></span></p>
 <ul>

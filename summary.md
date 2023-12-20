@@ -606,6 +606,7 @@ Procedure:
 4. etc...
 
 ![Example: projection on purple line will lead to larger variation](./img/linear_dimension_reduction_PCA.png)
+
 **How to find the optimal components?**
  
 Calculate the normalized eigenvectors of the covariancematrix. (matrix that displays the covariance between every pair of variables in a dataset)
