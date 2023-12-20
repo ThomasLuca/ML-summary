@@ -1,0 +1,3 @@
+[submodule "easy-pandoc-templates"]
+	path = easy-pandoc-templates
+	url = https://github.com/ryangrose/easy-pandoc-templates.git
