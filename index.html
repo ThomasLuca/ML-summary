@@ -177,6 +177,16 @@
         id="toc-non-linear-dimensionality-reduction">Non-linear
         dimensionality reduction</a></li>
         </ul></li>
+        <li><a href="#unsupervised-learning"
+        id="toc-unsupervised-learning">9. Unsupervised learning</a>
+        <ul>
+        <li><a href="#distance-based-algo"
+        id="toc-distance-based-algo">Distance-based algo</a></li>
+        <li><a
+        href="#probability-density-based-density-estimation-gaussian-mixture-model"
+        id="toc-probability-density-based-density-estimation-gaussian-mixture-model">Probability-density
+        based (density estimation): Gaussian Mixture Model</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -889,7 +899,7 @@ asking questions</li>
 <li>Loop over all features</li>
 <li>Pick a threshold</li>
 <li>Split data points in two based on this threshold</li>
-<li>Measure hog good split is with a <strong>cost function</strong></li>
+<li>Measure how good split is with a <strong>cost function</strong></li>
 <li>Pick best split</li>
 <li>Repeat until split is empty or until tree height is reached</li>
 </ol>
@@ -943,7 +953,8 @@ influenced the diagnosis prediction)</li>
 <li>✅: Easy to implement</li>
 <li>✅: Allows to determine feature importance</li>
 <li>✅: Supports multiple outputs</li>
-<li>❌: Unstable (small change in data an drastically change model)</li>
+<li>❌: Unstable (small change in data can drastically change
+model)</li>
 <li>❌: All decisions are made by orthogonal decision boundaries (only
 straight lines perpendicular to feature axis)</li>
 <li>❌: Relatively inaccurate</li>
@@ -961,7 +972,7 @@ straight lines perpendicular to feature axis)</li>
 <p>Different techniques: Voting, Boosting and Stacking</p>
 <blockquote>
 <p>💡: Decision trees are a good candidate for ensembles, because they
-can completely change if the data change a bit. This is a good quality
+can completely change if the data changes a bit. This is a good quality
 for ensembles.</p>
 </blockquote>
 <h3 id="voting">Voting</h3>
@@ -1134,6 +1145,156 @@ alt="Example of dim reduction using linear local embedding" />
 <figcaption aria-hidden="true">Example of dim reduction using linear
 local embedding</figcaption>
 </figure>
+<h2 id="unsupervised-learning">9. Unsupervised learning</h2>
+<h3 id="distance-based-algo">Distance-based algo</h3>
+<ul>
+<li>Goal: Find a group of similar instances</li>
+<li>Clustering algo assigns a cluster number to each sample</li>
+<li><strong>Unsupervised</strong>: There is no ground truth to evaluate
+the performance of the algorithm</li>
+</ul>
+<h4 id="k-means-clustering">K-means clustering</h4>
+<p>Strategy:</p>
+<ol type="1">
+<li>You want to make <code>k</code> clusters (desired number of
+classes)</li>
+<li>Randomly select <code>k</code> points from the dataset as initial
+cluster centroids <span
+class="math inline"><em>C</em><sup>(1)</sup>, …<em>C</em><sup>(<em>k</em>)</sup></span></li>
+<li>For each data point (<span
+class="math inline"><em>x</em><sup>(<em>i</em>)</sup></span>) in the
+dataset, calculate its distance to each centroid. Assign the data point
+to the nearest centroid: <span class="math inline">$b^{(i, j)} =
+\begin{cases} 1 &amp; \text{if} \quad j = argmin \sum_{l=i}^{m}
+(x_{l}^{(i)} - C_{l}^{(k)})^{2} \\ 0 \end{cases}$</span></li>
+<li>Calculate new values for centroids: <span
+class="math inline">$C_{new}^{(k)} = \frac{\sum_{i=1}^{m} b^{(i,k)}
+x^{(i)}}{\sum_{i=1}^{m} b^{(i,k)}}$</span></li>
+<li>Repeat 3-4 until convergence criteria are met</li>
+</ol>
+<blockquote>
+<p>💡: Possible stop criteria: length of cluster center shift, #
+iteration, …</p>
+</blockquote>
+<figure>
+<img src="./img/k-mean.png" alt="Example progression of k-means" />
+<figcaption aria-hidden="true">Example progression of
+k-means</figcaption>
+</figure>
+<dl>
+<dt><strong>Problem</strong></dt>
+<dd>
+If initial randomly selected centroids are bad, it may never find the
+right clusters.
+</dd>
+<dt><strong>Solution</strong></dt>
+<dd>
+Restart the k-means algo x-times and pick the clustering with the lowest
+<strong>inertia</strong> (= mean average distance of each point to its
+closest centroid)
+</dd>
+</dl>
+<ul>
+<li>❌: cannot deal with difference in density between clusters
+<ul>
+<li><strong>Variance</strong> of features must be similar for all
+clusters</li>
+</ul></li>
+</ul>
+<h5 id="finding-the-right-number-of-clusters-inertia">Finding the right
+number of clusters: inertia</h5>
+<ol type="1">
+<li><code>k</code> as hyperparam</li>
+<li>run k-mean algo for different values of <code>k</code></li>
+<li>Compare results, the lower <em>inertia</em>, the better</li>
+</ol>
+<p>inertia = <span class="math inline">$\frac{1}{m} \min || x^{(i)} -
+C^{j} ||^{2}$</span></p>
+<blockquote>
+<p>⚠️: Too many clusters might lead to overfitting</p>
+</blockquote>
+<h5 id="silhouette-score">Silhouette score</h5>
+<p>The <strong>silhouette score</strong> is a measure used to evaluate
+the quality of clustering in a dataset. It provides an indication of how
+well-separated the clusters are. This score ranges from -1 to 1,
+where:</p>
+<ul>
+<li>close to +1: the sample is far away from neighboring clusters,
+indicating good separation.</li>
+<li>close to 0: the sample is close to the decision boundary between two
+neighboring clusters.</li>
+<li>close to -1: sample might have been assigned to the wrong
+cluster.</li>
+</ul>
+<p><span class="math inline">$s^{(i)} = \frac{b^{(i)}-a^{(i)}}{\max
+(a^{(i)},b^{(i)})}$</span></p>
+<ul>
+<li><span class="math inline"><em>a</em><sup>(<em>i</em>)</sup></span>:
+mean distance from point to all other points in same cluster</li>
+<li><span class="math inline"><em>b</em><sup>(<em>i</em>)</sup></span>:
+mean distance from point to all instances in the next closest
+cluster</li>
+</ul>
+<figure>
+<img src="./img/silhouette_analysis.png"
+alt="Example of silhouette analysis" />
+<figcaption aria-hidden="true">Example of silhouette
+analysis</figcaption>
+</figure>
+<h4 id="dbscan-clustering">DBScan clustering</h4>
+<p><em>Density-Based Spatial Clustering of Applications with Noise</em>
+is a clustering algorithm particularly effective at identifying clusters
+of arbitrary shapes and handling noise in the data.</p>
+<p><strong>Core instance</strong>: point with least <code>minPts</code>
+within distance <span class="math inline"><em>ϵ</em></span></p>
+<ol type="1">
+<li>Pick a random point <code>p</code></li>
+<li>init a new cluster</li>
+<li>inspect <code>p</code>
+<ul>
+<li>if <code>p</code> is not core: consider as noise</li>
+<li>if <code>p</code> is core:
+<ul>
+<li>add all points within distance <span
+class="math inline"><em>ϵ</em></span> to cluster</li>
+<li>recursively inspect all point in neighbourhood</li>
+</ul></li>
+</ul></li>
+<li>Sample new unclustered point and repeat</li>
+</ol>
+<ul>
+<li>✅: no need to manually select number of clusters</li>
+<li>✅: find clusters of arbitrary shape</li>
+<li>✅: works well when clusters are dense enough and well-separated by
+low-density regions</li>
+<li>❌: not deterministic</li>
+<li>❌: uses distance metric (beware of scaling and <em>curse of dim
+reduction</em>)</li>
+<li>❌: difficult to choose right hyperparam</li>
+</ul>
+<h4 id="hierarchical-clustering">Hierarchical clustering</h4>
+<p>Cluster data into a hierarchy of groups or clusters. It doesn’t
+require specifying the number of clusters beforehand.</p>
+<figure>
+<img src="./img/hierarchical_clustering.png"
+alt="Example hierarchical clustering" />
+<figcaption aria-hidden="true">Example hierarchical
+clustering</figcaption>
+</figure>
+<p>Hyperparams:</p>
+<ul>
+<li><strong>Affinity</strong>: distance metric between points</li>
+<li><strong>Linkage function</strong>: distance between clusters
+<ul>
+<li>complete linkage: max distance between elements of different
+clusters</li>
+<li>single linkage: min distance between elements of different
+clusters</li>
+</ul></li>
+</ul>
+<h3
+id="probability-density-based-density-estimation-gaussian-mixture-model">Probability-density
+based (density estimation): Gaussian Mixture Model</h3>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

@@ -648,3 +648,97 @@ One technique to transform data to linear data is to use **Linear Local Embeddin
 
 ![Example of dim reduction using linear local embedding](./img/lin_local_embedding.png)
 
+## 9. Unsupervised learning
+
+### Distance-based algo
+
+- Goal: Find a group of similar instances
+- Clustering algo assigns a cluster number to each sample
+- **Unsupervised**: There is no ground truth to evaluate the performance of the algorithm
+
+#### K-means clustering
+
+Strategy:
+
+1. You want to make `k` clusters (desired number of classes)
+2. Randomly select `k` points from the dataset as initial cluster centroids $C^(1),\ldots C^(k)$
+3. For each data point ($x^{(i)}$) in the dataset, calculate its distance to each centroid. Assign the data point to the nearest centroid: $b^{(i, j)} = \begin{cases} 1 & \text{if} \quad j = argmin \sum_{l=i}^{m} (x_{l}^{(i)} - C_{l}^{(k)})^{2} \\ 0 \end{cases}$
+4. Calculate new values for centroids: $C_{new}^{(k)} = \frac{\sum_{i=1}^{m} b^{(i,k)} x^{(i)}}{\sum_{i=1}^{m} b^{(i,k)}}$
+5. Repeat 3-4 until convergence criteria are met
+
+> 💡: Possible stop criteria: length of cluster center shift, # iteration, ...
+
+![Example progression of k-means](./img/k-mean.png)
+
+**Problem**
+: If initial randomly selected centroids are bad, it may never find the right clusters. 
+
+**Solution**
+: Restart the k-means algo x-times and pick the clustering with the lowest **inertia** (= mean average distance of each point to its closest centroid)
+
+- ❌: cannot deal with difference in density between clusters
+  - **Variance** of features must be similar for all clusters
+
+##### Finding the right number of clusters: inertia
+
+1. `k` as hyperparam
+2. run k-mean algo for different values of `k`
+3. Compare results, the lower *inertia*, the better
+
+inertia = $\frac{1}{m} \min || x^{(i)} - C^{j} ||^{2}$
+
+> ⚠️: Too many clusters might lead to overfitting
+
+##### Silhouette score
+
+The **silhouette score** is a measure used to evaluate the quality of clustering in a dataset. It provides an indication of how well-separated the clusters are. This score ranges from -1 to 1, where:
+
+- close to +1: the sample is far away from neighboring clusters, indicating good separation.
+- close to 0: the sample is close to the decision boundary between two neighboring clusters.
+- close to -1: sample might have been assigned to the wrong cluster.
+
+$s^{(i)} = \frac{b^{(i)}-a^{(i)}}{\max (a^{(i)},b^{(i)})}$
+
+- $a^{(i)}$: mean distance from point to all other points in same cluster
+- $b^{(i)}$: mean distance from point to all instances in the next closest cluster
+
+![Example of silhouette analysis](./img/silhouette_analysis.png)
+
+#### DBScan clustering
+
+*Density-Based Spatial Clustering of Applications with Noise* is a clustering algorithm particularly effective at identifying clusters of arbitrary shapes and handling noise in the data.
+
+**Core instance**: point with least `minPts` within distance $\epsilon$
+
+1. Pick a random point `p`
+2. init a new cluster
+3. inspect `p`
+    - if `p` is not core: consider as noise
+    - if `p` is core:
+      - add all points within distance $\epsilon$ to cluster
+      - recursively inspect all point in neighbourhood
+4. Sample new unclustered point and repeat
+
+- ✅: no need to manually select number of clusters
+- ✅: find clusters of arbitrary shape
+- ✅: works well when clusters are dense enough and well-separated by low-density regions
+- ❌: not deterministic
+- ❌: uses distance metric (beware of scaling and *curse of dim reduction*)
+- ❌: difficult to choose right hyperparam
+
+#### Hierarchical clustering
+
+Cluster data into a hierarchy of groups or clusters. It doesn't require specifying the number of clusters beforehand.
+
+![Example hierarchical clustering](./img/hierarchical_clustering.png)
+
+Hyperparams:
+
+- **Affinity**: distance metric between points
+- **Linkage function**: distance between clusters
+  - complete linkage: max distance between elements of different clusters
+  - single linkage: min distance between elements of different clusters
+
+### Probability-density based (density estimation): Gaussian Mixture Model
+
+
