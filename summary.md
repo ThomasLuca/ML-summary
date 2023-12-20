@@ -607,6 +607,7 @@ Procedure:
 
 ![Example: projection on purple line will lead to larger variation](./img/linear_dimension_reduction_PCA.png)
 
+
 **How to find the optimal components?**
  
 Calculate the normalized eigenvectors of the covariancematrix. (matrix that displays the covariance between every pair of variables in a dataset)
@@ -624,6 +625,7 @@ Covariance Matrix: $M = U \cdot \sum \cdot V^{*}$
 - U = orthogonal matrix representing the left singular vectors
 - $\sum$ = diagonal matrix with singular values on the diagonal
 - V = columns of vector V contain **unit vectors** corresponding with principal components
+
 #### PCA steps
 
 1. Center-mean the dataset
