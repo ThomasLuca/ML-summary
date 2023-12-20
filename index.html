@@ -163,6 +163,20 @@
         <li><a href="#boosting" id="toc-boosting">Boosting</a></li>
         <li><a href="#stacking" id="toc-stacking">Stacking</a></li>
         </ul></li>
+        <li><a href="#dimensionality-reduction"
+        id="toc-dimensionality-reduction">8. Dimensionality
+        Reduction</a>
+        <ul>
+        <li><a href="#curse-of-dimensionality"
+        id="toc-curse-of-dimensionality">Curse of
+        dimensionality</a></li>
+        <li><a href="#linear-dimensionality-reduction"
+        id="toc-linear-dimensionality-reduction">Linear dimensionality
+        reduction</a></li>
+        <li><a href="#non-linear-dimensionality-reduction"
+        id="toc-non-linear-dimensionality-reduction">Non-linear
+        dimensionality reduction</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -1010,6 +1024,111 @@ that the model will combine predictions of other models.</p>
 <strong>Blending data set</strong></li>
 <li>Train a model on the predictions of the first models</li>
 </ol>
+<h2 id="dimensionality-reduction">8. Dimensionality Reduction</h2>
+<p>Every data point is a point in an n-dimensional space.</p>
+<h3 id="curse-of-dimensionality">Curse of dimensionality</h3>
+<p>As the amount of features (= dimensions) grows, the amount of data we
+need te generalize grows exponentially.</p>
+<ul>
+<li><em>Data becomes sparser: instances are further from each other in
+higher dimensions</em></li>
+<li><em>Distance loses its meaning</em>: all points become equally far
+away from a given point</li>
+</ul>
+<dl>
+<dt><strong>Manifold hypothesis</strong></dt>
+<dd>
+The hypothesis dictates that data is actually lower dimensional than the
+original input space. (Therefor, we should be able to reduce dimensions
+and preserve accurate data)
+</dd>
+</dl>
+<p>Approaches to dimensionality reduction:</p>
+<ul>
+<li><strong>Feature selection</strong>: Only keep the useful
+features</li>
+<li><strong>Feature projection</strong>: Apply transformation and
+projections to derive new features</li>
+</ul>
+<h3 id="linear-dimensionality-reduction">Linear dimensionality
+reduction</h3>
+<p>Dimensionality reduction on linear data.</p>
+<h4
+id="principal-component-analysis-pca-geometric-interpretation">Principal
+Component Analysis (PCA): geometric interpretation</h4>
+<p>Procedure:</p>
+<ol type="1">
+<li>Minimize projection error is equal to maximizing the variance of the
+projected data</li>
+<li>Find direction of largest variance in data (eigenvector with largest
+eigenvalue) (1st principal component)</li>
+<li>Find direction of remaining largest variance, orthogonal to 1st
+principal components (2nd principal component)</li>
+<li>etc…</li>
+</ol>
+<p><img src="./img/linear_dimension_reduction_PCA.png"
+alt="Example: projection on purple line will lead to larger variation" />
+<strong>How to find the optimal components?</strong></p>
+<p>Calculate the normalized eigenvectors of the covariancematrix.
+(matrix that displays the covariance between every pair of variables in
+a dataset)</p>
+<ol type="1">
+<li>The eigenvector <code>v</code> of a matrix <code>A</code> are the
+vectors <code>v</code> such that if you multiply <code>A</code> with
+<code>v</code>, you get a multiple of <code>v</code></li>
+<li>The vector still points in the same direction but has different
+length</li>
+<li>The scalar <code>λ</code> is called the eigenvalue that belongs to
+<code>v</code>.</li>
+</ol>
+<p><strong>Covariance</strong>: <span class="math inline">$\sigma(x_{1},
+x_{2}) = \frac{1}{m-1} \sum_{i=1}^{m}(x_{1}^{(i)} -
+\overline{x_{1}})\,(x_{2}^{(i)} - \overline{x_{2}})$</span>)</p>
+<p>Covariance Matrix: <span
+class="math inline"><em>M</em> = <em>U</em> ⋅ ∑ ⋅ <em>V</em><sup>*</sup></span></p>
+<ul>
+<li>M = covariance matrix</li>
+<li>U = orthogonal matrix representing the left singular vectors</li>
+<li><span class="math inline">∑</span> = diagonal matrix with singular
+values on the diagonal</li>
+<li>V = columns of vector V contain <strong>unit vectors</strong>
+corresponding with principal components #### PCA steps</li>
+</ul>
+<ol type="1">
+<li>Center-mean the dataset</li>
+<li>Compute eigenvectors and the corresponding eigenvalues of the
+covariance matrix (via SVD (Singular Value Decomposition))</li>
+<li>Sort the eigenvectors by decreasing eigenvalues</li>
+<li>Select the eigenvectors of the d largest eigenvalues</li>
+<li>Form an <code>n x d</code> matrix <code>W</code> containing the
+second eigenvectors as columns</li>
+<li>Use eigenvector matrix to transform the samples onto the new
+subspace</li>
+</ol>
+<figure>
+<img src="./img/PCA_calculation.png" alt="PCA calculation" />
+<figcaption aria-hidden="true">PCA calculation</figcaption>
+</figure>
+<figure>
+<img src="./img/explained_variance_ratio.png"
+alt="Explained variance ratio" />
+<figcaption aria-hidden="true">Explained variance ratio</figcaption>
+</figure>
+<blockquote>
+<p>❗: Make exercises on slides 25 and 26!</p>
+</blockquote>
+<h3 id="non-linear-dimensionality-reduction">Non-linear dimensionality
+reduction</h3>
+<p>One technique to transform data to linear data is to use
+<strong>Linear Local Embedding</strong>. In this technique, you preserve
+the original relative distance to near neighbours in the reduced space
+(Reduced dimension).</p>
+<figure>
+<img src="./img/lin_local_embedding.png"
+alt="Example of dim reduction using linear local embedding" />
+<figcaption aria-hidden="true">Example of dim reduction using linear
+local embedding</figcaption>
+</figure>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

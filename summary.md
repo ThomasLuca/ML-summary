@@ -572,3 +572,76 @@ Train a model using predictions of other models as input. Meaning that the model
 3. Extract the predictions of the models for the second part = **Blending data set**
 4. Train a model on the predictions of the first models
 
+
+## 8. Dimensionality Reduction
+
+Every data point is a point in an n-dimensional space.
+
+### Curse of dimensionality
+
+As the amount of features (= dimensions) grows, the amount of data we need te generalize grows exponentially.
+
+- *Data becomes sparser: instances are further from each other in higher dimensions*
+- *Distance loses its meaning*: all points become equally far away from a given point
+
+**Manifold hypothesis**
+: The hypothesis dictates that data is actually lower dimensional than the original input space. (Therefor, we should be able to reduce dimensions and preserve accurate data)
+
+Approaches to dimensionality reduction:
+
+- **Feature selection**: Only keep the useful features
+- **Feature projection**: Apply transformation and projections to derive new features
+
+### Linear dimensionality reduction
+
+Dimensionality reduction on linear data.
+
+#### Principal Component Analysis (PCA): geometric interpretation
+
+Procedure:
+
+1. Minimize projection error is equal to maximizing the variance of the projected data
+2. Find direction of largest variance in data (eigenvector with largest eigenvalue) (1st principal component)
+3. Find direction of remaining largest variance, orthogonal to 1st principal components (2nd principal component)
+4. etc...
+
+![Example: projection on purple line will lead to larger variation](./img/linear_dimension_reduction_PCA.png)
+**How to find the optimal components?**
+ 
+Calculate the normalized eigenvectors of the covariancematrix. (matrix that displays the covariance between every pair of variables in a dataset)
+
+1. The eigenvector `v` of a matrix `A` are the vectors `v` such that if you multiply `A` with `v`, you get a multiple of `v`
+2. The vector still points in the same direction but has different length
+3. The scalar `λ` is called the eigenvalue that belongs to `v`.
+
+**Covariance**: $\sigma(x_{1}, x_{2}) = \frac{1}{m-1} \sum_{i=1}^{m}(x_{1}^{(i)} - \overline{x_{1}})\,(x_{2}^{(i)} - \overline{x_{2}})$
+
+
+Covariance Matrix: $M = U \cdot \sum \cdot V^{*}$
+
+- M = covariance matrix
+- U = orthogonal matrix representing the left singular vectors
+- $\sum$ = diagonal matrix with singular values on the diagonal
+- V = columns of vector V contain **unit vectors** corresponding with principal components
+#### PCA steps
+
+1. Center-mean the dataset
+2. Compute eigenvectors and the corresponding eigenvalues of the covariance matrix (via SVD (Singular Value Decomposition))
+3. Sort the eigenvectors by decreasing eigenvalues
+4. Select the eigenvectors of the d largest eigenvalues
+5. Form an `n x d` matrix `W` containing the second eigenvectors as columns
+6. Use eigenvector matrix to transform the samples onto the new subspace
+
+![PCA calculation](./img/PCA_calculation.png)
+
+![Explained variance ratio](./img/explained_variance_ratio.png)
+
+> ❗: Make exercises on slides 25 and 26!
+
+
+### Non-linear dimensionality reduction
+
+One technique to transform data to linear data is to use **Linear Local Embedding**. In this technique, you preserve the original relative distance to near neighbours in the reduced space (Reduced dimension).
+
+![Example of dim reduction using linear local embedding](./img/lin_local_embedding.png)
+
