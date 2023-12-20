@@ -460,7 +460,7 @@ Y = Patient has heart disease
 1. Loop over all features
 2. Pick a threshold
 3. Split data points in two based on this threshold
-4. Measure hog good split is with a **cost function**
+4. Measure how good split is with a **cost function**
 5. Pick best split
 6. Repeat until split is empty or until tree height is reached
 
@@ -506,7 +506,7 @@ Decision trees, too, can overfit. Therefor regularization is important. It limit
 - ✅: Easy to implement
 - ✅: Allows to determine feature importance
 - ✅: Supports multiple outputs
-- ❌: Unstable (small change in data an drastically change model)
+- ❌: Unstable (small change in data can drastically change model)
 - ❌: All decisions are made by orthogonal decision boundaries (only straight lines perpendicular to feature axis)
 - ❌: Relatively inaccurate
 - ❌: Prone to overfitting
@@ -522,7 +522,7 @@ Procedure:
 
 Different techniques: Voting, Boosting and Stacking
 
-> 💡: Decision trees are a good candidate for ensembles, because they can completely change if the data change a bit. This is a good quality for ensembles.
+> 💡: Decision trees are a good candidate for ensembles, because they can completely change if the data changes a bit. This is a good quality for ensembles.
 
 ### Voting
 
