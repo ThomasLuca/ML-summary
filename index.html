@@ -195,6 +195,20 @@
         <li><a href="#multivariate-gmm"
         id="toc-multivariate-gmm">multivariate GMM</a></li>
         </ul></li>
+        <li><a
+        href="#introduction-to-artificial-neural-networks-with-keras"
+        id="toc-introduction-to-artificial-neural-networks-with-keras">10.
+        Introduction to Artificial Neural Networks with Keras</a>
+        <ul>
+        <li><a href="#wave-1-perceptron" id="toc-wave-1-perceptron">10.1
+        Wave 1: Perceptron</a></li>
+        <li><a href="#wave-2-distributed-representations"
+        id="toc-wave-2-distributed-representations">10.2 Wave 2:
+        Distributed representations</a></li>
+        <li><a href="#wave-3-deep-learning"
+        id="toc-wave-3-deep-learning">10.3 Wave 3: Deep
+        learning</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -1520,6 +1534,117 @@ for clustering</h4>
 <img src="./img/MLE-clustering.png" alt="Example MLE for clustering" />
 <figcaption aria-hidden="true">Example MLE for clustering</figcaption>
 </figure>
+<hr />
+<h2 id="introduction-to-artificial-neural-networks-with-keras">10.
+Introduction to Artificial Neural Networks with Keras</h2>
+<h3 id="wave-1-perceptron">10.1 Wave 1: Perceptron</h3>
+<dl>
+<dt><strong>Perceptron</strong></dt>
+<dd>
+Single-layer NN that aims to solve binary classification problems.
+</dd>
+</dl>
+<p><strong>Different components</strong>:</p>
+<ul>
+<li>Inputs</li>
+<li>Weights</li>
+<li>Weighted sum</li>
+<li>Step function</li>
+</ul>
+<figure>
+<img src="./img/perceptron.png" alt="perceptron" />
+<figcaption aria-hidden="true">perceptron</figcaption>
+</figure>
+<p>Weights get updated using the following formula:</p>
+<p><span
+class="math display"><em>w</em><sub><em>i</em>, <em>j</em></sub><sup>(<em>n</em><em>e</em><em>x</em><em>t</em> <em>s</em><em>t</em><em>e</em><em>p</em>)</sup> = <em>w</em><sub><em>i</em>, <em>j</em></sub> + <em>η</em>(<em>y</em><sub><em>j</em></sub>−<em>ŷ</em><sub><em>j</em></sub>)<em>x</em><sub><em>i</em></sub></span></p>
+<ul>
+<li><span
+class="math inline"><em>w</em><sub><em>i</em>, <em>j</em></sub><sup><em>n</em><em>e</em><em>x</em><em>t</em> <em>s</em><em>t</em><em>e</em><em>p</em></sup></span>:
+Next weight value</li>
+<li><span
+class="math inline"><em>w</em><sub><em>i</em>, <em>j</em></sub></span>:
+Old weight</li>
+<li><span class="math inline"><em>η</em></span>: learning rate (constant
+that determines the step size)</li>
+<li><span
+class="math inline"><em>y</em><sub><em>j</em></sub> − <em>ŷ</em><sub><em>j</em></sub></span>:
+target - prediction (binary value)</li>
+<li><span class="math inline"><em>x</em><sub><em>i</em></sub></span>:
+input value</li>
+</ul>
+<p>The problem with the perceptron is that it is only capable of making
+linear decision boundaries. (Not even able to solve an XOR).</p>
+<h3 id="wave-2-distributed-representations">10.2 Wave 2: Distributed
+representations</h3>
+<p>The concept of <strong>connectionism</strong> got tracktion: Every
+input should be represented by different features. Every feature should
+be involved in the representation of the many inputs.</p>
+<p><strong>Multi layered perceptrons</strong> (MLP) also got discovered.
+These added layers allowed backpropagation to happen -&gt; non-linear
+classification boundaries.</p>
+<h3 id="wave-3-deep-learning">10.3 Wave 3: Deep learning</h3>
+<p>Because of the better hardware, we were able to make deep neural
+networks. And train them with more readily available data. A deep neural
+network consists of multiple stacked layers of neurons, typically
+trained using backpropagation (gradient descent).</p>
+<figure>
+<img src="./img/DNN.png" alt="Deep neural network" />
+<figcaption aria-hidden="true">Deep neural network</figcaption>
+</figure>
+<p><strong>“Deep”</strong> refers to the fact that the model is able to
+extract features from raw information instead of having humans extract
+the manually.</p>
+<p><strong>Logistic Regression</strong>: simple neural network:</p>
+<figure>
+<img src="./img/logistic-regression.png" alt="Logistic regression" />
+<figcaption aria-hidden="true">Logistic regression</figcaption>
+</figure>
+<h4 id="activation-functions">Activation functions</h4>
+<p>By default, each layer calculates a linear combination of the outputs
+of the previous layer. By adding non-linear activations, we can make the
+network behave in a non-linear way. (most common: ReLU)</p>
+<figure>
+<img src="./img/activation-functions.png" alt="Activation functions" />
+<figcaption aria-hidden="true">Activation functions</figcaption>
+</figure>
+<h4 id="neural-network-training">Neural network training</h4>
+<p>There is no closed solution to finding the minimal loss as the loss
+function is <em>non-convex</em>. Instead we rely on <strong>gradient
+descent</strong> which is not guaranteed to find the global minima.</p>
+<p><strong>Backpropagation</strong> :Algorithm to calculate the gradient
+with respect to the parameters of hidden layers.</p>
+<h4
+id="neural-networks-for-unsupervised-learning-dimensionality-reduction">Neural
+networks for unsupervised learning / dimensionality reduction</h4>
+<ul>
+<li><strong>Autoencoder</strong>: model trained to reconstruct its own
+input</li>
+<li>Autoencoder has a <strong>bottleneck</strong> between the encoder
+and decoder, effectively compressing the data.</li>
+<li>After compressing, a <strong>decoder</strong> tries to reconstruct
+it to original state</li>
+<li>If there was no correlation between data this would not work.</li>
+<li>If there is correlation, that structure can be learned</li>
+</ul>
+<p>Autoencoders are used for:</p>
+<ul>
+<li>Dimensionality reduction: discard decoder after training</li>
+<li>Anomaly detection: reconstruction error is anomaly metric</li>
+<li>Unsupervised pretraining</li>
+</ul>
+<p>Neural networks have many hyperparams that need to get
+configured:</p>
+<ul>
+<li>Num of layers</li>
+<li>Num of neurons/layer</li>
+<li>Activation function</li>
+<li>Learning rate &amp; batch size</li>
+<li>Training algo and loss function</li>
+<li>Initialization of params</li>
+<li>Noise and data augmentation</li>
+<li>Regularization</li>
+</ul>
 <hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">

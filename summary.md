@@ -878,3 +878,89 @@ Where:
 
 ---
 
+## 10. Introduction to Artificial Neural Networks with Keras
+
+### 10.1 Wave 1: Perceptron
+
+**Perceptron**
+: Single-layer NN that aims to solve binary classification problems.
+
+**Different components**:
+
+- Inputs
+- Weights
+- Weighted sum
+- Step function
+
+![perceptron](./img/perceptron.png)
+
+Weights get updated using the following formula:
+
+$$w_{i,j}^{(next\,step)} = w_{i,j} + \eta(y_{j} - \hat{y}_{j})x_{i}$$
+
+- $w_{i,j}^{next\,step}$: Next weight value
+- $w_{i,j}$: Old weight
+- $\eta$: learning rate (constant that determines the step size)
+- $y_{j} - \hat{y}_{j}$: target - prediction (binary value)
+- $x_{i}$: input value
+
+The problem with the perceptron is that it is only capable of making linear decision boundaries. (Not even able to solve an XOR).
+
+### 10.2 Wave 2: Distributed representations
+
+The concept of **connectionism** got tracktion: Every input should be represented by different features. Every feature should be involved in the representation of the many inputs.
+
+**Multi layered perceptrons** (MLP) also got discovered. These added layers allowed backpropagation to happen -> non-linear classification boundaries.
+
+### 10.3 Wave 3: Deep learning
+
+Because of the better hardware, we were able to make deep neural networks. And train them with more readily available data. A deep neural network consists of multiple stacked layers of neurons, typically trained using backpropagation (gradient descent).
+
+![Deep neural network](./img/DNN.png)
+
+**"Deep"** refers to the fact that the model is able to extract features from raw information instead of having humans extract the manually.
+
+**Logistic Regression**: simple neural network:
+
+![Logistic regression](./img/logistic-regression.png)
+
+#### Activation functions
+
+By default, each layer calculates a linear combination of the outputs of the previous layer. By adding non-linear activations, we can make the network behave in a non-linear way. (most common: ReLU)
+
+![Activation functions](./img/activation-functions.png)
+
+
+#### Neural network training
+
+There is no closed solution to finding the minimal loss as the loss function is *non-convex*. Instead we rely on **gradient descent** which is not guaranteed to find the global minima.
+
+**Backpropagation**
+:Algorithm to calculate the gradient with respect to the parameters of hidden layers.
+
+#### Neural networks for unsupervised learning / dimensionality reduction
+
+- **Autoencoder**: model trained to reconstruct its own input
+- Autoencoder has a **bottleneck** between the encoder and decoder, effectively compressing the data.
+- After compressing, a **decoder** tries to reconstruct it to original state
+- If there was no correlation between data this would not work.
+- If there is correlation, that structure can be learned
+
+Autoencoders are used for: 
+
+- Dimensionality reduction: discard decoder after training
+- Anomaly detection: reconstruction error is anomaly metric
+- Unsupervised pretraining
+
+Neural networks have many hyperparams that need to get configured:
+
+- Num of layers
+- Num of neurons/layer
+- Activation function
+- Learning rate & batch size
+- Training algo and loss function
+- Initialization of params
+- Noise and data augmentation
+- Regularization
+
+---
