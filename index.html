@@ -186,6 +186,14 @@
         href="#probability-density-based-density-estimation-gaussian-mixture-model"
         id="toc-probability-density-based-density-estimation-gaussian-mixture-model">Probability-density
         based (density estimation): Gaussian Mixture Model</a></li>
+        <li><a href="#density-estimation-maximum-likelihood"
+        id="toc-density-estimation-maximum-likelihood">Density
+        estimation: Maximum likelihood</a></li>
+        <li><a href="#soft-clustering-gaussian-mixture-distribution"
+        id="toc-soft-clustering-gaussian-mixture-distribution">Soft
+        clustering: Gaussian Mixture Distribution</a></li>
+        <li><a href="#multivariate-gmm"
+        id="toc-multivariate-gmm">multivariate GMM</a></li>
         </ul></li>
         </ul></li>
         </ul>
@@ -340,11 +348,11 @@ impact on the model. This can be solved by <em>rescaling</em> them using
 the following techniques:</p>
 <ul>
 <li><strong>Normalization</strong> (min-max scaling): <span
-class="math inline">$x_{norm} = \frac{x - min(x)}{max(x) -
-min(x)}$</span></li>
+class="math inline">$x_{norm} = \frac{x - \min(x)}{\max(x) -
+\min(x)}$</span></li>
 <li><strong>Standardization</strong>: <span
 class="math inline">$x_{stand} = \frac{x -
-mean(x)}{standarddeviation(x)}$</span></li>
+mean(x)}{\text{standarddeviation}(x)}$</span></li>
 </ul>
 <h2 id="classification">3. Classification</h2>
 <p>Classification always happens by <em>supervised learning</em>
@@ -372,12 +380,12 @@ TN}{Total}$</span></p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Automobile</td>
+<td><strong>Automobile</strong></td>
 <td>True Positive</td>
 <td>False Negative</td>
 </tr>
 <tr class="even">
-<td>No Automobile</td>
+<td><strong>No Automobile</strong></td>
 <td>False Positive</td>
 <td>True Negative</td>
 </tr>
@@ -1010,7 +1018,7 @@ each model, used to calculate the final prediction</li>
 <ol type="1">
 <li>Initialize every weight to 1/m</li>
 <li>Train the model (calculate its weighted error rate)</li>
-<li>Calculate the predictor wight</li>
+<li>Calculate the predictor weight</li>
 <li>Update the instance weights and normalize them</li>
 <li>Repeat 2-4 until max number of predictors is reached or sufficient
 performance</li>
@@ -1295,6 +1303,224 @@ clusters</li>
 <h3
 id="probability-density-based-density-estimation-gaussian-mixture-model">Probability-density
 based (density estimation): Gaussian Mixture Model</h3>
+<h4 id="generative-modelling">Generative modelling</h4>
+<p>A ML technique used to create models that can generate new data
+similar to a given dataset. This is commonly used for image or text
+generation.</p>
+<p><strong>Inductive bias</strong>: instances in dataset are samples
+form <em>unknown statistical distribution</em> over a feature space:
+<span
+class="math inline"><em>x</em><sup>(<em>i</em>)</sup> ∼ <em>P</em><sub><em>d</em><em>a</em><em>t</em><em>a</em></sub>(<em>x</em>)</span></p>
+<p><strong>Task</strong>: learn from the data a <em>probability density
+function</em> that matches this unknown distribution: <span
+class="math inline"><em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em>) ≈ <em>P</em><sub><em>d</em><em>a</em><em>t</em><em>a</em></sub>(<em>x</em>)</span></p>
+<h4 id="distribution-family">Distribution family</h4>
+<p><strong>Inductive bias</strong>: data is sampled from a member of a
+particular <em>distribution family</em>: <span
+class="math inline"><em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em>) = <em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em>;<em>θ</em>)</span></p>
+<p><strong>Task</strong>: find the “best” values for the parameter
+vector <span class="math inline"><em>θ</em></span> which we denote as
+<span class="math inline"><em>θ</em><sup>*</sup></span></p>
+<figure>
+<img src="./img/example_distribution_families.png"
+alt="Example of distribution families" />
+<figcaption aria-hidden="true">Example of distribution
+families</figcaption>
+</figure>
+<h4 id="use-cases-for-generative-models">Use cases for generative
+models</h4>
+<ul>
+<li><strong>Anomaly detection</strong>: if <span
+class="math inline"><em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em><sub><em>n</em><em>e</em><em>w</em></sub>;<em>θ</em>*)</span>
+is lower than threshold -&gt; anomaly
+<ul>
+<li><figure>
+<img src="./img/generative-anomaly-detection.png"
+alt="Generative model anomaly detection" />
+<figcaption aria-hidden="true">Generative model anomaly
+detection</figcaption>
+</figure></li>
+</ul></li>
+<li><strong>Classification</strong>: generate a new sample with the
+features of the new data and add a feature that represents a class. Do
+this for every class and then compare the probabilities. <span
+class="math inline"><em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em><sub>1, <em>n</em><em>e</em><em>w</em></sub>,<em>x</em><sub>2, <em>n</em><em>e</em><em>w</em></sub>,<em>y</em>=1,<em>θ</em>*) ≫ <em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em><sub>1, <em>n</em><em>e</em><em>w</em></sub>,<em>x</em><sub>2, <em>n</em><em>e</em><em>w</em></sub>,<em>y</em>=2,<em>θ</em>*)</span>
+<ul>
+<li>Where <code>x1</code> and <code>x2</code> are features form the data
+and <code>y</code> is the class</li>
+</ul></li>
+<li><strong>Generating new samples</strong>
+<ul>
+<li><figure>
+<img src="./img/generative-sample-generation.png"
+alt="Generative model to make new samples" />
+<figcaption aria-hidden="true">Generative model to make new
+samples</figcaption>
+</figure></li>
+</ul></li>
+</ul>
+<h4 id="how-to-sample-from-a-distribution">How to sample from a
+distribution?</h4>
+<ol type="1">
+<li>Make inverse cumulative distribution function</li>
+<li>Sample a random number in [0, 1[ (CDF(x) = <span
+class="math inline"><em>x</em><sub><em>n</em><em>e</em><em>w</em></sub></span>)</li>
+</ol>
+<figure>
+<img src="./img/sample_from_distrebution.png"
+alt="Sample from distribution" />
+<figcaption aria-hidden="true">Sample from distribution</figcaption>
+</figure>
+<h3 id="density-estimation-maximum-likelihood">Density estimation:
+Maximum likelihood</h3>
+<p><strong>Inductive bias</strong>: universal Gaussian distribution</p>
+<p><strong>Task</strong>: find “best” values for <span
+class="math inline"><em>θ</em> = [<em>μ</em>,<em>σ</em>]</span></p>
+<h4 id="likelihood-function-to-find-best-distribution">Likelihood
+function (to find best distribution)</h4>
+<p>Every item <code>x</code> in our dataset is a sample of an unknown
+distribution <span
+class="math inline"><em>P</em><sub><em>d</em><em>a</em><em>t</em><em>a</em></sub>(<em>x</em>)</span>.
+We assume that this distribution is a member of a family of
+distributions <span
+class="math inline"><em>P</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em>;<em>θ</em>)</span>.
+The best model should maximize the <strong>joint probability</strong> of
+all items <span
+class="math inline"><em>x</em><sup>(<em>i</em>)</sup></span>.</p>
+<p><span class="math display">$$P_{model}(x^{(1)},\ldots,x^{(m)};
+\theta) = \prod_{i=1}^{m} P_{model}(x^{(i)};\theta) =
+\mathcal{L}(\theta)$$</span></p>
+<blockquote>
+<p>❗: High probability for a practical question on the exam!</p>
+</blockquote>
+<h4 id="negative-loglikelihood-estimation">Negative Loglikelihood
+estimation</h4>
+<p>Often used to find the minimal loss function.</p>
+<figure>
+<img src="./img/negative-likelihood-estimation.png"
+alt="Negative Loglikelihood estimation" />
+<figcaption aria-hidden="true">Negative Loglikelihood
+estimation</figcaption>
+</figure>
+<h3 id="soft-clustering-gaussian-mixture-distribution">Soft clustering:
+Gaussian Mixture Distribution</h3>
+<p>What if there are multiple groups in a dataset? For example a dataset
+of dog pictures, these can be categorized in groups by dog-race.</p>
+<h4 id="multimodel-distribution">Multimodel distribution</h4>
+<p>Here, data is distributed as sum of multiple Gausssian distributions.
+Note: this sum gets <em>downscaled</em> to maintain a surface of
+<code>1</code>.</p>
+<figure>
+<img src="./img/multimodel-distr.png" alt="Mutimodal distribution" />
+<figcaption aria-hidden="true">Mutimodal distribution</figcaption>
+</figure>
+<h4 id="gaussian-mixture-model-gmm">Gaussian Mixture Model (GMM)</h4>
+<p><span class="math display">$$P_{model}(x;\theta) = \sum_{i=1}^{k}
+\phi_{i} \mathcal{N}(x;\mu_{i},\sigma_{i})$$</span></p>
+<p>In this formula, <span class="math inline"><em>ϕ</em></span> is the
+factor with which to <em>rescale</em> the individual distributions to
+maintain a valid density function (surface = 1).</p>
+<figure>
+<img src="./img/gmm-coefficients.png"
+alt="GMM model: if a certain class is more represented than others, the mixture component will have a higher weight (right)" />
+<figcaption aria-hidden="true">GMM model: if a certain class is more
+represented than others, the mixture component will have a higher weight
+(right)</figcaption>
+</figure>
+<h4 id="mle-of-gaussian-mixture-model">MLE of Gaussian Mixture
+Model</h4>
+<p>The MLE (Maximum Likelihood Estimation) of a GMM involves finding the
+parameters (<span class="math inline"><em>μ</em>, <em>σ</em></span>)
+that best fit the observed data under the assumption that the data comes
+from a mixture of Gaussian distributions.</p>
+<p>However, data under GMM doesn’t have a closed mathematical solution
+so we can’t maximize the likelihood function with concepts like gradient
+descent. Instead, we use our prior knowledge (inductive bias)</p>
+<ol type="1">
+<li>If we know which source or component generated each data point (x),
+we can estimate the parameters of <span
+class="math inline"><em>μ</em></span> and <span
+class="math inline"><em>σ</em></span> by fitting a Gaussian
+distribution.</li>
+<li>If we know the means and variances, we can calculate the likelihood
+of each data source to have generated x.</li>
+</ol>
+<h4 id="soft-labeling">Soft labeling</h4>
+<p>We can label data by comparing the confidences (<span
+class="math inline">𝒩(<em>x</em>;<em>μ</em><sub><em>i</em></sub>,<em>σ</em><sub><em>i</em></sub>)</span>)
+of data to a certain GMM component.</p>
+<figure>
+<img src="./img/gmm-soft-labling.png" alt="Soft labling" />
+<figcaption aria-hidden="true">Soft labling</figcaption>
+</figure>
+<h4 id="expection-maximization-algorithm-em">Expection-Maximization
+algorithm (EM)</h4>
+<ol type="1">
+<li>Calculate soft-labels based on current distribution params
+(expectation step)</li>
+<li>Update distribution params (maximization step)</li>
+<li>Repeat</li>
+</ol>
+<h4 id="soft-clustering">Soft Clustering</h4>
+<p>In contrast to <em>k-means</em> clustering, where the model decides
+which group a sample belongs to. We can quantify the likelihood a sample
+belongs to a particular group by soft clustering the data.</p>
+<p>Process:</p>
+<ol type="1">
+<li>Identify the number of clusters you want to split the data
+into.</li>
+<li>Define each cluster by generating it a Gaussian model.</li>
+<li>For every sample, calculate the probability it belongs to a certain
+cluster.</li>
+<li>Recalculate the Gaussian models using the above probabilities.</li>
+<li>Repeat until high set of probabilities.</li>
+</ol>
+<h3 id="multivariate-gmm">multivariate GMM</h3>
+<h4 id="multivariate-unimodel-gaussian">Multivariate unimodel
+Gaussian</h4>
+<p>A multi-dimensional Gaussian distribution (multivariate) that has a
+single peak or mode. It’s a type of multivariate Gaussian distribution
+where the data tends to cluster around a single central point</p>
+<figure>
+<img src="./img/multivariate-uni.png"
+alt="Example of multivariate unimodel Gaussian" />
+<figcaption aria-hidden="true">Example of multivariate unimodel
+Gaussian</figcaption>
+</figure>
+<p><span
+class="math display"><em>p</em>(<em>x</em>) = <em>p</em>(<em>x</em><sub>1</sub>,…,<em>x</em><sub><em>n</em></sub>) = 𝒩(<em>x</em>;<em>μ</em>,<em>Σ</em>)</span></p>
+<p>Where:</p>
+<ul>
+<li><span
+class="math inline"><em>μ</em> = [<em>μ</em><sub><em>x</em></sub> <em>μ</em><sub><em>y</em></sub>]</span></li>
+<li><span class="math inline">$\Sigma = \begin{pmatrix} \sigma_{x}^{2}
+&amp;\rho\sigma_{x}\sigma_{y} \\ \rho\sigma_{x}\sigma_{y}
+&amp;\sigma_{y}^{2} \end{pmatrix}$</span></li>
+</ul>
+<h4 id="multivariate-multimodel-gaussian">Multivariate multimodel
+Gaussian</h4>
+<p>A multi-dimensional Gaussian distribution (multivariate) that has
+multiple peaks. For example, a dataset of dogs. Every dog in that
+distribution has its own multivariate unimodel Gaussian distribution (eg
+height x wight).</p>
+<p><span class="math display">$$p(x) = \sum_{i=1}^{k} \phi_{i}
+\mathcal{N}(x;\mu_{i},\Sigma_{i})$$</span></p>
+<p>Where:</p>
+<ul>
+<li><span
+class="math inline"><em>μ</em><sub><em>i</em></sub> = [<em>μ</em><sub><em>i</em><em>x</em></sub> <em>μ</em><sub><em>i</em><em>y</em></sub>]</span></li>
+<li><span class="math inline">$\Sigma_{i} = \begin{pmatrix}
+\sigma_{ix_{1}}^{2} &amp;\rho_{i}\sigma_{1x_{1}}\sigma_{1x_{2}} \\
+\rho_{i}\sigma_{ix_{1}}\sigma_{ix_{2}} &amp;\sigma_{ix_{2}}^{2}
+\end{pmatrix}$</span></li>
+</ul>
+<h4 id="mle-result-can-be-used-for-clustering">MLE result can be used
+for clustering</h4>
+<figure>
+<img src="./img/MLE-clustering.png" alt="Example MLE for clustering" />
+<figcaption aria-hidden="true">Example MLE for clustering</figcaption>
+</figure>
+<hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

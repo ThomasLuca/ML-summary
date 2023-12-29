@@ -91,8 +91,8 @@ Attributes that can only take a limited number of values (eg: T-shirt sizes)
 Some extremely big or small features may have an abnormally large impact on the model.
 This can be solved by _rescaling_ them using the following techniques:
 
-- **Normalization** (min-max scaling): $x_{norm} = \frac{x - min(x)}{max(x) - min(x)}$
-- **Standardization**: $x_{stand} = \frac{x - mean(x)}{standarddeviation(x)}$
+- **Normalization** (min-max scaling): $x_{norm} = \frac{x - \min(x)}{\max(x) - \min(x)}$
+- **Standardization**: $x_{stand} = \frac{x - mean(x)}{\text{standarddeviation}(x)}$
 
 ## 3. Classification
 
@@ -113,8 +113,8 @@ Columns are predicted labels, rows are true labels
 
 |               | Automobile     | No Automobile  |
 | ------------- | -------------- | -------------- |
-| Automobile    | True Positive  | False Negative |
-| No Automobile | False Positive | True Negative  |
+| **Automobile**    | True Positive  | False Negative |
+| **No Automobile** | False Positive | True Negative  |
 
 #### Precision and recall
 
@@ -551,7 +551,7 @@ Each sequential model focuses more on the data points that had incorrect predict
 
 1. Initialize every weight to 1/m
 2. Train the model (calculate its weighted error rate)
-3. Calculate the predictor wight
+3. Calculate the predictor weight
 4. Update the instance weights and normalize them 
 5. Repeat 2-4 until max number of predictors is reached or sufficient performance
 6. Calculate weighted prediction of the different models
@@ -741,4 +741,140 @@ Hyperparams:
 
 ### Probability-density based (density estimation): Gaussian Mixture Model
 
+#### Generative modelling
+
+A ML technique used to create models that can generate new data similar to a given dataset. This is commonly used for image or text generation.
+
+**Inductive bias**: instances in dataset are samples form *unknown statistical distribution* over a feature space: $x^{(i)} \sim P_{data}(x)$
+
+**Task**: learn from the data a *probability density function* that matches this unknown distribution: $P_{model}(x) \approx P_{data}(x)$
+
+#### Distribution family
+
+**Inductive bias**: data is sampled from a member of a particular *distribution family*: $P_{model}(x) = P_{model}(x;\theta)$
+
+**Task**: find the "best" values for the parameter vector $\theta$ which we denote as $\theta^{*}$
+
+![Example of distribution families](./img/example_distribution_families.png)
+
+#### Use cases for generative models
+
+- **Anomaly detection**: if $P_{model}(x_{new}; \theta*)$ is lower than threshold -> anomaly
+  - ![Generative model anomaly detection](./img/generative-anomaly-detection.png)
+- **Classification**: generate a new sample with the features of the new data and add a feature that represents a class. Do this for every class and then compare the probabilities. $P_{model}(x_{1,new}, x_{2, new}, y = 1, \theta*) \gg P_{model}(x_{1,new}, x_{2, new}, y = 2, \theta*)$
+  - Where `x1` and `x2` are features form the data and `y` is the class
+- **Generating new samples**
+  - ![Generative model to make new samples](./img/generative-sample-generation.png)
+
+#### How to sample from a distribution?
+
+1. Make inverse cumulative distribution function
+2. Sample a random number in [0, 1[ (CDF(x) = $x_{new}$)
+
+![Sample from distribution](./img/sample_from_distrebution.png)
+
+### Density estimation: Maximum likelihood
+
+**Inductive bias**: universal Gaussian distribution
+
+**Task**: find "best" values for $\theta = [\mu, \sigma]$
+
+#### Likelihood function (to find best distribution)
+
+Every item `x` in our dataset is a sample of an unknown distribution $P_{data}(x)$. We assume that this distribution is a member of a family of distributions $P_{model}(x;\theta)$. The best model should maximize the **joint probability** of all items $x^{(i)}$.
+
+$$P_{model}(x^{(1)},\ldots,x^{(m)}; \theta) = \prod_{i=1}^{m} P_{model}(x^{(i)};\theta) = \mathcal{L}(\theta)$$
+
+> ❗: High probability for a practical question on the exam!
+
+
+#### Negative Loglikelihood estimation
+
+Often used to find the minimal loss function.
+
+![Negative Loglikelihood estimation](./img/negative-likelihood-estimation.png)
+
+### Soft clustering: Gaussian Mixture Distribution
+
+What if there are multiple groups in a dataset? For example a dataset of dog pictures, these can be categorized in groups by dog-race.
+
+#### Multimodel distribution
+
+Here, data is distributed as sum of multiple Gausssian distributions. Note: this sum gets *downscaled* to maintain a surface of `1`.
+
+![Mutimodal distribution](./img/multimodel-distr.png)
+
+#### Gaussian Mixture Model (GMM)
+
+$$P_{model}(x;\theta) = \sum_{i=1}^{k} \phi_{i} \mathcal{N}(x;\mu_{i},\sigma_{i})$$
+
+In this formula, $\phi$ is the factor with which to *rescale* the individual distributions to maintain a valid density function (surface = 1).
+
+![GMM model: if a certain class is more represented than others, the mixture component will have a higher weight (right)](./img/gmm-coefficients.png)
+
+#### MLE of Gaussian Mixture Model
+
+The MLE (Maximum Likelihood Estimation) of a GMM involves finding the parameters ($\mu,\sigma$) that best fit the observed data under the assumption that the data comes from a mixture of Gaussian distributions.
+
+However, data under GMM doesn't have a closed mathematical solution so we can't maximize the likelihood function with concepts like gradient descent. Instead, we use our prior knowledge (inductive bias)
+
+1. If we know which source or component generated each data point (x), we can estimate the parameters of $\mu$ and $\sigma$ by fitting a Gaussian distribution.
+2. If we know the means and variances, we can calculate the likelihood of each data source to have generated x.
+
+#### Soft labeling
+
+We can label data by comparing the confidences ($\mathcal{N}(x;\mu_{i},\sigma_{i})$) of data to a certain GMM component.
+
+![Soft labling](./img/gmm-soft-labling.png)
+
+#### Expection-Maximization algorithm (EM)
+
+1. Calculate soft-labels based on current distribution params (expectation step)
+2. Update distribution params (maximization step)
+3. Repeat
+
+#### Soft Clustering
+
+In contrast to *k-means* clustering, where the model decides which group a sample belongs to. We can quantify the likelihood a sample belongs to a particular group by soft clustering the data.
+
+Process:
+
+1. Identify the number of clusters you want to split the data into.
+2. Define each cluster by generating it a Gaussian model.
+3. For every sample, calculate the probability it belongs to a certain cluster.
+4. Recalculate the Gaussian models using the above probabilities.
+5. Repeat until high set of probabilities.
+
+### multivariate GMM
+
+#### Multivariate unimodel Gaussian
+
+A multi-dimensional Gaussian distribution (multivariate) that has a single peak or mode. It's a type of multivariate Gaussian distribution where the data tends to cluster around a single central point
+
+![Example of multivariate unimodel Gaussian](./img/multivariate-uni.png)
+
+$$p(x) = p(x_{1},\ldots,x_{n}) = \mathcal{N}(x;\mu,\Sigma)$$
+
+Where:
+
+- $\mu = [\mu_{x} \; \mu_{y}]$
+- $\Sigma = \begin{pmatrix} \sigma_{x}^{2} &\rho\sigma_{x}\sigma_{y} \\ \rho\sigma_{x}\sigma_{y} &\sigma_{y}^{2} \end{pmatrix}$
+
+#### Multivariate multimodel Gaussian
+
+A multi-dimensional Gaussian distribution (multivariate) that has multiple peaks. For example, a dataset of dogs. Every dog in that distribution has its own multivariate unimodel Gaussian distribution (eg height x wight).
+
+$$p(x) = \sum_{i=1}^{k} \phi_{i} \mathcal{N}(x;\mu_{i},\Sigma_{i})$$
+
+Where:
+
+- $\mu_{i} = [\mu_{ix} \; \mu_{iy}]$
+- $\Sigma_{i} = \begin{pmatrix} \sigma_{ix_{1}}^{2} &\rho_{i}\sigma_{1x_{1}}\sigma_{1x_{2}} \\ \rho_{i}\sigma_{ix_{1}}\sigma_{ix_{2}} &\sigma_{ix_{2}}^{2} \end{pmatrix}$
+
+
+#### MLE result can be used for clustering
+
+![Example MLE for clustering](./img/MLE-clustering.png)
+
+---
 
