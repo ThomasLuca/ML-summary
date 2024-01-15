@@ -209,6 +209,26 @@
         id="toc-wave-3-deep-learning">10.3 Wave 3: Deep
         learning</a></li>
         </ul></li>
+        <li><a href="#training-deep-neural-networks"
+        id="toc-training-deep-neural-networks">11. Training Deep Neural
+        Networks</a>
+        <ul>
+        <li><a href="#vanishing-exploding-gradients"
+        id="toc-vanishing-exploding-gradients">Vanishing / exploding
+        gradients</a></li>
+        <li><a href="#optimization-algorithms"
+        id="toc-optimization-algorithms">Optimization
+        algorithms</a></li>
+        <li><a href="#learning-rate-scheduling"
+        id="toc-learning-rate-scheduling">Learning rate
+        scheduling</a></li>
+        <li><a href="#regularization-1"
+        id="toc-regularization-1">Regularization</a></li>
+        <li><a href="#normalization"
+        id="toc-normalization">Normalization</a></li>
+        <li><a href="#hyper-parameter-tuning"
+        id="toc-hyper-parameter-tuning">Hyper parameter tuning</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -1464,8 +1484,8 @@ of each data source to have generated x.</li>
 class="math inline">𝒩(<em>x</em>;<em>μ</em><sub><em>i</em></sub>,<em>σ</em><sub><em>i</em></sub>)</span>)
 of data to a certain GMM component.</p>
 <figure>
-<img src="./img/gmm-soft-labling.png" alt="Soft labling" />
-<figcaption aria-hidden="true">Soft labling</figcaption>
+<img src="./img/gmm-soft-labling.png" alt="Soft labeling" />
+<figcaption aria-hidden="true">Soft labeling</figcaption>
 </figure>
 <h4 id="expection-maximization-algorithm-em">Expection-Maximization
 algorithm (EM)</h4>
@@ -1644,6 +1664,119 @@ configured:</p>
 <li>Initialization of params</li>
 <li>Noise and data augmentation</li>
 <li>Regularization</li>
+</ul>
+<hr />
+<h2 id="training-deep-neural-networks">11. Training Deep Neural
+Networks</h2>
+<h3 id="vanishing-exploding-gradients">Vanishing / exploding
+gradients</h3>
+<p>By stacking multiple layers with sigmoid activations, the gradients
+become very small for the first layers (<strong>Vanishing
+gradients</strong>) and wont change much despite not being trained
+good.</p>
+<p>Situation:</p>
+<ol type="1">
+<li>Gradients are propagated backward through layers, they get
+multiplied by weight matrices and activation functions’
+derivatives.</li>
+<li>Activation functions have regions where their derivatives become
+very small (<span class="math inline"> ≈ 0</span>)</li>
+<li>The deeper the gradient traverses in the network, the effect of
+small gradients gets compounded until it effectively “vanishes”.</li>
+</ol>
+<h4 id="solution-1-weight-initialization">Solution 1: Weight
+initialization</h4>
+<p>The distribution of the initial weight factors can have a big impact
+on the model training. It is best to give every weight an initial
+±random value. A common strategy is to assign a weight a value from a
+normal distribution.</p>
+<h4 id="solution-2-activation-functions">Solution 2: Activation
+functions</h4>
+<blockquote>
+<p>⚠️: Sigmoid activation functions are not the best choice because of
+<strong>saturation</strong>. Saturation occurs because the activation
+function squashes the input values to a number in the range of [0, 1].
+Extreme input values (small or large) get a value close to 0 or 1 and
+the gradient becomes very small.</p>
+</blockquote>
+<p>To avoid saturation, the use of the ReLU (Rectified Linear Units)
+activation function, or one of its derivatives, is preferred. (ReLU
+returns the value itself if it is bigger than 0)</p>
+<h4 id="solution-3-batchnorm">Solution 3: Batchnorm</h4>
+<ul>
+<li>Additional layers after neural network layers</li>
+<li>Normalizes the activations by subtracting a mean and dividing by the
+standard deviation of the activations across the batch during
+training</li>
+<li>Keeps track of a moving average of these statistics to be used for
+inference.</li>
+<li>It is supposed to reduce “internal covariate shift”, but it is not
+quite understood how or why this happens.</li>
+</ul>
+<h3 id="optimization-algorithms">Optimization algorithms</h3>
+<p>There are some algorithms that can perform better than mini-batch
+gradient.</p>
+<ul>
+<li><strong>Momentum</strong>: Use previous gradient to keep track of
+the direction (faster and can escape local min/max)</li>
+<li><strong>Adaptive learning rate</strong>: Algo that automatically
+uses different learning rate for different parameter</li>
+<li><strong>Second order method</strong>: Use second order partial
+derivatives to estimate curvature around a point (expensive but gives
+more insight in how far you are from optimum)</li>
+</ul>
+<figure>
+<img src="./img/momentum.png"
+alt="Example of algo with and without momentum" />
+<figcaption aria-hidden="true">Example of algo with and without
+momentum</figcaption>
+</figure>
+<h3 id="learning-rate-scheduling">Learning rate scheduling</h3>
+<p>💡: Learning rate determines the size of the step the model takes
+when searching for minimum. It is perhaps the most important hyper
+parameter to tune. A good strategy is to start with a high learning rate
+and decrease it overtime (decay).</p>
+<h3 id="regularization-1">Regularization</h3>
+<p>Regularization limits the freedom of the model. If you let the model
+learn to much, it becomes prone to overfitting.</p>
+<p>A couple regularization techniques:</p>
+<ul>
+<li>Use more training data</li>
+<li>Use data augmentation and randomness</li>
+<li>L1 and L2 regularization</li>
+<li>Dropouts
+<ul>
+<li>Randomly set some nodes to zero during training</li>
+<li>This increases robustness</li>
+<li>Forces each neuron to be more independent</li>
+</ul></li>
+</ul>
+<h3 id="normalization">Normalization</h3>
+<p>Normalization is the process of scaling and transforming the input
+features to a standard scale. The goal is to bring all features to a
+similar scale, preventing certain features from dominating the learning
+process simply because they have larger magnitudes.</p>
+<p>Techniques:</p>
+<ul>
+<li>Min-max normalization: Scale to [0, 1]</li>
+<li>Zero-center: subtract mean</li>
+<li>Standardize: subtract mean, divide by standard deviation</li>
+</ul>
+<h3 id="hyper-parameter-tuning">Hyper parameter tuning</h3>
+<p>This can be done manually (“grad student descent”) or automatically
+(grid search, random search, …).</p>
+<p>A good general approach:</p>
+<ul>
+<li>Use simple model without generalization</li>
+<li>Sanity check the loss</li>
+<li>Overfit on a small subset of the data
+<ul>
+<li>try different models</li>
+<li>try different learning rates</li>
+</ul></li>
+<li>Train the most promising models on the full dataset for a few
+epochs, try different optimizers</li>
+<li>Apply regularization and train on the full dataset</li>
 </ul>
 <hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"

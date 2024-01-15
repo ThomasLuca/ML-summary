@@ -825,7 +825,7 @@ However, data under GMM doesn't have a closed mathematical solution so we can't 
 
 We can label data by comparing the confidences ($\mathcal{N}(x;\mu_{i},\sigma_{i})$) of data to a certain GMM component.
 
-![Soft labling](./img/gmm-soft-labling.png)
+![Soft labeling](./img/gmm-soft-labling.png)
 
 #### Expection-Maximization algorithm (EM)
 
@@ -946,7 +946,7 @@ There is no closed solution to finding the minimal loss as the loss function is 
 - If there was no correlation between data this would not work.
 - If there is correlation, that structure can be learned
 
-Autoencoders are used for: 
+Autoencoders are used for:
 
 - Dimensionality reduction: discard decoder after training
 - Anomaly detection: reconstruction error is anomaly metric
@@ -964,3 +964,87 @@ Neural networks have many hyperparams that need to get configured:
 - Regularization
 
 ---
+
+## 11. Training Deep Neural Networks
+
+### Vanishing / exploding gradients
+
+By stacking multiple layers with sigmoid activations, the gradients become very small for the first layers (**Vanishing gradients**) and wont change much despite not being trained good.
+
+Situation:
+
+1. Gradients are propagated backward through layers, they get multiplied by weight matrices and activation functions' derivatives.
+2. Activation functions have regions where their derivatives become very small ($\approx 0$)
+3. The deeper the gradient traverses in the network, the effect of small gradients gets compounded until it effectively "vanishes".
+
+#### Solution 1: Weight initialization
+
+The distribution of the initial weight factors can have a big impact on the model training. It is best to give every weight an initial ±random value. A common strategy is to assign a weight a value from a normal distribution.
+
+#### Solution 2: Activation functions
+
+> ⚠️: Sigmoid activation functions are not the best choice because of **saturation**. Saturation occurs because the activation function squashes the input values to a number in the range of [0, 1]. Extreme input values (small or large) get a value close to 0 or 1 and the gradient becomes very small.
+
+To avoid saturation, the use of the ReLU (Rectified Linear Units) activation function, or one of its derivatives, is preferred. (ReLU returns the value itself if it is bigger than 0)
+
+#### Solution 3: Batchnorm
+
+- Additional layers after neural network layers
+- Normalizes the activations by subtracting a mean and dividing by the standard deviation of the activations across the batch during training
+- Keeps track of a moving average of these statistics to be used for inference.
+- It is supposed to reduce "internal covariate shift", but it is not quite understood how or why this happens.
+
+### Optimization algorithms
+
+There are some algorithms that can perform better than mini-batch gradient.
+
+- **Momentum**: Use previous gradient to keep track of the direction (faster and can escape local min/max)
+- **Adaptive learning rate**: Algo that automatically uses different learning rate for different parameter
+- **Second order method**: Use second order partial derivatives to estimate curvature around a point (expensive but gives more insight in how far you are from optimum)
+
+![Example of algo with and without momentum](./img/momentum.png)
+
+### Learning rate scheduling
+
+💡: Learning rate determines the size of the step the model takes when searching for minimum. It is perhaps the most important hyper parameter to tune. A good strategy is to start with a high learning rate and decrease it overtime (decay).
+
+### Regularization
+
+Regularization limits the freedom of the model. If you let the model learn to much, it becomes prone to overfitting.
+
+A couple regularization techniques:
+
+- Use more training data
+- Use data augmentation and randomness
+- L1 and L2 regularization
+- Dropouts
+  - Randomly set some nodes to zero during training
+  - This increases robustness
+  - Forces each neuron to be more independent
+
+### Normalization
+
+Normalization is the process of scaling and transforming the input features to a standard scale. The goal is to bring all features to a similar scale, preventing certain features from dominating the learning process simply because they have larger magnitudes.
+
+Techniques:
+
+- Min-max normalization: Scale to [0, 1]
+- Zero-center: subtract mean
+- Standardize: subtract mean, divide by standard deviation
+
+### Hyper parameter tuning
+
+This can be done manually ("grad student descent") or automatically (grid search, random search, ...).
+
+A good general approach:
+
+- Use simple model without generalization
+- Sanity check the loss
+- Overfit on a small subset of the data
+  - try different models
+  - try different learning rates
+- Train the most promising models on the full dataset for a few epochs, try different optimizers
+- Apply regularization and train on the full dataset
+
+---
+
