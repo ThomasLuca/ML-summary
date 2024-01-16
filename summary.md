@@ -1048,3 +1048,91 @@ A good general approach:
 
 ---
 
+## 14. Deep Computer vision using convolutional neural networks
+
+When working with input data with higher dimensions (like images), traditional neural networks face some problems.
+
+Lets take an image for example (200x200x3), first of all, this data has to get reshaped to 1D (flatten).
+
+- **Problem 1**: The model needs to learn that certain inputs are related
+- **Problem 2**: 120000 input nodes + hidden layers make for a very large neural network (consumes a lot of memory and is less efficient to train)
+
+### Convolutional neural networks
+
+(CNN's) are designed to solve these problems.
+
+- Inputs are kept in 2D or even 3D (the *convolutional layers* also keep these dimensions)
+- Not all neurons are connected to all neurons from previous layer. Instead, every neuron is connected to some patches (e.g. 3x3) of neurons from the previous layer
+- **Hierarchical structure**
+  - First layer (most nodes) focuses on small low-level features
+  - Deeper layers assemble these into higher level features
+- **Weights are reused**
+  - All neurons on the same layer use the same weights
+  - These weights define a **kernel** (filter) that slide over the input
+  
+  By **convolving** the inputs with a suitable kernel, we obtain a filtered version of the image or a **feature map**. Depending on the kernel, it is also possible to learn **spatial** features (like horizontal vs vertical lines or certain color transitions). A single layers applies N filters and thus generates N feature maps. The weights of these filters are determined using gradient descent.
+  
+![CNN model](./img/cnn-layers.png)
+
+#### Convolutional layer output size
+
+The output size is determinded by the size of the kernel and the **stride** (step between the places the filter is applied)
+
+$$n_{out} = \lfloor \frac{n_{in} + 2p - k}{s} \rfloor + 1$$
+
+- $n_{in}$: num of input features
+- $n_{out}$: num of output features
+- `k`: conv kernel size
+- `p`: conv padding size (sometimes **zero padding** is applied so that every value of the input is taken into account)
+- `s`: conv stride size
+
+![Convolution](./img/convolution.png)
+
+#### Convolutional layer number of parameters
+
+number of parameters = Number of kernels * kernel size + number of kernels (bias term)
+
+### Pooling
+
+After performing a convolution, the feature maps can still be quite large. A solution to this is to subsampel the features from the feature maps. In **max pooling** this is done by dividing the feature maps into slices. For every slice, only the most dominant (max) value is kept. The result is a feature map with with the same resolution as the number of slices. It is also possible to pool in strides.
+
+![Pooling with 2x2 max-pool](./img/pooling.png)
+
+$$W_{out} = \frac{W - F}{S} + 1$$
+
+- $W_{out}$ = output width/height
+- `W` = input width/height
+- `F` = pool size
+- `S` = pool stride
+
+
+- ✅: Reduce memory required
+- ✅: Reduce computational cost
+- ✅: Allow next layer to have larger receptive field
+- ✅: Improve invariance to small translations of the input
+- ❌: Some loss of information
+
+### CNN architecture
+
+The final network is obtained by stacking
+
+- Conv layers
+- Non-linear activations
+- (opt) batchnorm
+- Pooling
+ 
+To perform classification, the model is typically followed by:
+
+- flatten
+- fully connected layer
+- activation function (softmax)
+
+![CNN architecture](./img/cnn-architecture.png)
+
+
+#### Data augmentation
+
+For CNN, a common technique is to artificially increase the size of the training set bet generating variants of existing training instances (rotate, flip, blur, crop, ...). This often reduces overfitting.
+
+---
+

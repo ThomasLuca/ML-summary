@@ -229,6 +229,18 @@
         <li><a href="#hyper-parameter-tuning"
         id="toc-hyper-parameter-tuning">Hyper parameter tuning</a></li>
         </ul></li>
+        <li><a
+        href="#deep-computer-vision-using-convolutional-neural-networks"
+        id="toc-deep-computer-vision-using-convolutional-neural-networks">14.
+        Deep Computer vision using convolutional neural networks</a>
+        <ul>
+        <li><a href="#convolutional-neural-networks"
+        id="toc-convolutional-neural-networks">Convolutional neural
+        networks</a></li>
+        <li><a href="#pooling" id="toc-pooling">Pooling</a></li>
+        <li><a href="#cnn-architecture" id="toc-cnn-architecture">CNN
+        architecture</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -1778,6 +1790,129 @@ process simply because they have larger magnitudes.</p>
 epochs, try different optimizers</li>
 <li>Apply regularization and train on the full dataset</li>
 </ul>
+<hr />
+<h2 id="deep-computer-vision-using-convolutional-neural-networks">14.
+Deep Computer vision using convolutional neural networks</h2>
+<p>When working with input data with higher dimensions (like images),
+traditional neural networks face some problems.</p>
+<p>Lets take an image for example (200x200x3), first of all, this data
+has to get reshaped to 1D (flatten).</p>
+<ul>
+<li><strong>Problem 1</strong>: The model needs to learn that certain
+inputs are related</li>
+<li><strong>Problem 2</strong>: 120000 input nodes + hidden layers make
+for a very large neural network (consumes a lot of memory and is less
+efficient to train)</li>
+</ul>
+<h3 id="convolutional-neural-networks">Convolutional neural
+networks</h3>
+<p>(CNN’s) are designed to solve these problems.</p>
+<ul>
+<li>Inputs are kept in 2D or even 3D (the <em>convolutional layers</em>
+also keep these dimensions)</li>
+<li>Not all neurons are connected to all neurons from previous layer.
+Instead, every neuron is connected to some patches (e.g. 3x3) of neurons
+from the previous layer</li>
+<li><strong>Hierarchical structure</strong>
+<ul>
+<li>First layer (most nodes) focuses on small low-level features</li>
+<li>Deeper layers assemble these into higher level features</li>
+</ul></li>
+<li><strong>Weights are reused</strong>
+<ul>
+<li>All neurons on the same layer use the same weights</li>
+<li>These weights define a <strong>kernel</strong> (filter) that slide
+over the input</li>
+</ul>
+By <strong>convolving</strong> the inputs with a suitable kernel, we
+obtain a filtered version of the image or a <strong>feature
+map</strong>. Depending on the kernel, it is also possible to learn
+<strong>spatial</strong> features (like horizontal vs vertical lines or
+certain color transitions). A single layers applies N filters and thus
+generates N feature maps. The weights of these filters are determined
+using gradient descent.</li>
+</ul>
+<figure>
+<img src="./img/cnn-layers.png" alt="CNN model" />
+<figcaption aria-hidden="true">CNN model</figcaption>
+</figure>
+<h4 id="convolutional-layer-output-size">Convolutional layer output
+size</h4>
+<p>The output size is determinded by the size of the kernel and the
+<strong>stride</strong> (step between the places the filter is
+applied)</p>
+<p><span class="math display">$$n_{out} = \lfloor \frac{n_{in} + 2p -
+k}{s} \rfloor + 1$$</span></p>
+<ul>
+<li><span
+class="math inline"><em>n</em><sub><em>i</em><em>n</em></sub></span>:
+num of input features</li>
+<li><span
+class="math inline"><em>n</em><sub><em>o</em><em>u</em><em>t</em></sub></span>:
+num of output features</li>
+<li><code>k</code>: conv kernel size</li>
+<li><code>p</code>: conv padding size (sometimes <strong>zero
+padding</strong> is applied so that every value of the input is taken
+into account)</li>
+<li><code>s</code>: conv stride size</li>
+</ul>
+<figure>
+<img src="./img/convolution.png" alt="Convolution" />
+<figcaption aria-hidden="true">Convolution</figcaption>
+</figure>
+<h4 id="convolutional-layer-number-of-parameters">Convolutional layer
+number of parameters</h4>
+<p>number of parameters = Number of kernels * kernel size + number of
+kernels (bias term)</p>
+<h3 id="pooling">Pooling</h3>
+<p>After performing a convolution, the feature maps can still be quite
+large. A solution to this is to subsampel the features from the feature
+maps. In <strong>max pooling</strong> this is done by dividing the
+feature maps into slices. For every slice, only the most dominant (max)
+value is kept. The result is a feature map with with the same resolution
+as the number of slices. It is also possible to pool in strides.</p>
+<figure>
+<img src="./img/pooling.png" alt="Pooling with 2x2 max-pool" />
+<figcaption aria-hidden="true">Pooling with 2x2 max-pool</figcaption>
+</figure>
+<p><span class="math display">$$W_{out} = \frac{W - F}{S} +
+1$$</span></p>
+<ul>
+<li><p><span
+class="math inline"><em>W</em><sub><em>o</em><em>u</em><em>t</em></sub></span>
+= output width/height</p></li>
+<li><p><code>W</code> = input width/height</p></li>
+<li><p><code>F</code> = pool size</p></li>
+<li><p><code>S</code> = pool stride</p></li>
+<li><p>✅: Reduce memory required</p></li>
+<li><p>✅: Reduce computational cost</p></li>
+<li><p>✅: Allow next layer to have larger receptive field</p></li>
+<li><p>✅: Improve invariance to small translations of the
+input</p></li>
+<li><p>❌: Some loss of information</p></li>
+</ul>
+<h3 id="cnn-architecture">CNN architecture</h3>
+<p>The final network is obtained by stacking</p>
+<ul>
+<li>Conv layers</li>
+<li>Non-linear activations</li>
+<li>(opt) batchnorm</li>
+<li>Pooling</li>
+</ul>
+<p>To perform classification, the model is typically followed by:</p>
+<ul>
+<li>flatten</li>
+<li>fully connected layer</li>
+<li>activation function (softmax)</li>
+</ul>
+<figure>
+<img src="./img/cnn-architecture.png" alt="CNN architecture" />
+<figcaption aria-hidden="true">CNN architecture</figcaption>
+</figure>
+<h4 id="data-augmentation">Data augmentation</h4>
+<p>For CNN, a common technique is to artificially increase the size of
+the training set bet generating variants of existing training instances
+(rotate, flip, blur, crop, …). This often reduces overfitting.</p>
 <hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
