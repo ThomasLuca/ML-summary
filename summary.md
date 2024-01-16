@@ -1224,3 +1224,101 @@ A simplified version of LSTMs that work equally well.
 
 ---
 
+## 16. Natural Language processing with RNNs and attention (**Transformers**)
+
+### Natural Language Preprocessing (NLP)
+
+ML technique that uses text as input and/or output.
+
+Different approaches:
+
+- Traditional: feature extraction + ML model
+- RNN
+- Transformer based
+
+#### Basic textual feature extraction
+
+- ML algos typically require numeric input data
+- N-grams: often, words are kept into sequences of N-words. For example the bi-grams of the sentence "This is a sentence" becomes: `["This is", "is a", "a sentence"]`
+- Large vocab -> sparse inputs
+- Text vectorization: convert each document to a vector of numerical features
+
+$$w_{x,y} = tf_{x,y} . \log(\frac{N}{df_{x}})$$
+
+- `w`:  weight
+- `tf`: freq of word
+- `N`: number of documents
+- `df`: number of documents where word occures
+
+### RNNs for text generation (seq2seq)
+
+- Pass a single input character at a time and predict the next character in the sequence.
+- At inference time, we predict one char at a time passing the previous output as input
+- *Unsupervised pretraining*: The text encodings learned by the model can be useful for other tasks like sentiment analysis.
+
+![RRN for text generation](./img/rnn-text-gen.png)
+
+### RNNs for text classification (seq2vec)
+
+Classification of text could be sentiment analysis. For the purpose of classification, it's best to pass the entire sentence as input. Every word gets assigned a unique ID, and only the N most frequent words get used to classify. The network typically has one *embedding layer* that serves as a lookup table that converts every word to a learned vector representation. The vector representation usually conveys how close certain words are to each other.
+
+### Neural machine translation (encoder-decoder)
+
+- Encoder receives input sentence, one word at a time
+- Decoder receives encoder state and correct previous output word
+
+![Translation with encoder-decoder](./img/encoder-decoder-translation.png)
+
+#### Bidirectional RNN
+
+The representation of a word typically depends on both the previous and the next word. That's why a second RNN gets added that reads the sentence backwards. Then, concatenate the two states of the encoder RNNs before passing it to the decoder.
+
+![Bidirectinal RNN](./img/bidirectional-rnn.png)
+
+#### Beam search
+
+Keep track of the `k` most likely potential output sentences. Try to extend all of these sentences with one additional word.
+
+### Attention mechanisms
+
+The encoder-decoder architecture struggles with long sentences because all the info needs to be encoded in the state. To solve this issue, an attention mechanism gets used.
+
+The attention mechanism keeps track of info related to all words in the input sentence and allow the decoder to selectively attend to parts of the input.
+
+- We store the encoder's output while preprocessing the input
+- At each timestep, the decoder receives a weighted sum of those outputs as input.
+- Weights are predicted by an alignment model based on the decoder's current state and encoder outputs.
+
+#### Multi-head attention
+
+For each word in the input sentence, the attention applies a linear layer to obtain three tensors: key, value, query.
+
+It then calculates the similarity between the word's query vec with all other key vecs. These similarities are used to calculate a weighted average. This is repeated a couple of times to allow the model to extract different types of relationships between input tokens.
+
+### Transformers
+
+An architecture that does not make use of RNN or CNN, just fully connected layers + attention. It does not suffer from vanishing gradient and is better at capturing long-range patterns.
+
+1. The sentence is split word by word
+2. Each word is replaced by a learnable embedding
+3. The sentence is then represented by a 3D tensor
+4. Tensor is transformed while going through the model but the dimensions remain the same
+
+The encoder transforms every input word into a high level representation that captures the meaning of that word in this specific sentence.
+While the decoder transforms the embedding of a translated word into the embedding of the next translated word based on the information extracted by the encoder.
+
+![Transformer](./img/transformer.png)
+
+### GPT
+
+- Generative pretrained transformer
+  - Pretrained: predict the next token in the sentence
+  - Finetuning: set of different task (summarization, text classification or sentiment analysis)
+- Previous models used supervised learning (e.g. translation) but labeled datasets are expensive to collect
+
+### Vision transformer
+
+Transformers can also be used for image classification (e.g. ConvNet)
+
+---
+

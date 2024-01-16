@@ -257,6 +257,32 @@
         id="toc-gated-recurrent-units-gru">Gated Recurrent Units
         (GRU)</a></li>
         </ul></li>
+        <li><a
+        href="#natural-language-processing-with-rnns-and-attention-transformers"
+        id="toc-natural-language-processing-with-rnns-and-attention-transformers">16.
+        Natural Language processing with RNNs and attention
+        (<strong>Transformers</strong>)</a>
+        <ul>
+        <li><a href="#natural-language-preprocessing-nlp"
+        id="toc-natural-language-preprocessing-nlp">Natural Language
+        Preprocessing (NLP)</a></li>
+        <li><a href="#rnns-for-text-generation-seq2seq"
+        id="toc-rnns-for-text-generation-seq2seq">RNNs for text
+        generation (seq2seq)</a></li>
+        <li><a href="#rnns-for-text-classification-seq2vec"
+        id="toc-rnns-for-text-classification-seq2vec">RNNs for text
+        classification (seq2vec)</a></li>
+        <li><a href="#neural-machine-translation-encoder-decoder"
+        id="toc-neural-machine-translation-encoder-decoder">Neural
+        machine translation (encoder-decoder)</a></li>
+        <li><a href="#attention-mechanisms"
+        id="toc-attention-mechanisms">Attention mechanisms</a></li>
+        <li><a href="#transformers"
+        id="toc-transformers">Transformers</a></li>
+        <li><a href="#gpt" id="toc-gpt">GPT</a></li>
+        <li><a href="#vision-transformer"
+        id="toc-vision-transformer">Vision transformer</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -2054,6 +2080,142 @@ be used in current step</li>
 <img src="./img/GRU.png" alt="GRU" />
 <figcaption aria-hidden="true">GRU</figcaption>
 </figure>
+<hr />
+<h2
+id="natural-language-processing-with-rnns-and-attention-transformers">16.
+Natural Language processing with RNNs and attention
+(<strong>Transformers</strong>)</h2>
+<h3 id="natural-language-preprocessing-nlp">Natural Language
+Preprocessing (NLP)</h3>
+<p>ML technique that uses text as input and/or output.</p>
+<p>Different approaches:</p>
+<ul>
+<li>Traditional: feature extraction + ML model</li>
+<li>RNN</li>
+<li>Transformer based</li>
+</ul>
+<h4 id="basic-textual-feature-extraction">Basic textual feature
+extraction</h4>
+<ul>
+<li>ML algos typically require numeric input data</li>
+<li>N-grams: often, words are kept into sequences of N-words. For
+example the bi-grams of the sentence “This is a sentence” becomes:
+<code>["This is", "is a", "a sentence"]</code></li>
+<li>Large vocab -&gt; sparse inputs</li>
+<li>Text vectorization: convert each document to a vector of numerical
+features</li>
+</ul>
+<p><span class="math display">$$w_{x,y} = tf_{x,y} .
+\log(\frac{N}{df_{x}})$$</span></p>
+<ul>
+<li><code>w</code>: weight</li>
+<li><code>tf</code>: freq of word</li>
+<li><code>N</code>: number of documents</li>
+<li><code>df</code>: number of documents where word occures</li>
+</ul>
+<h3 id="rnns-for-text-generation-seq2seq">RNNs for text generation
+(seq2seq)</h3>
+<ul>
+<li>Pass a single input character at a time and predict the next
+character in the sequence.</li>
+<li>At inference time, we predict one char at a time passing the
+previous output as input</li>
+<li><em>Unsupervised pretraining</em>: The text encodings learned by the
+model can be useful for other tasks like sentiment analysis.</li>
+</ul>
+<figure>
+<img src="./img/rnn-text-gen.png" alt="RRN for text generation" />
+<figcaption aria-hidden="true">RRN for text generation</figcaption>
+</figure>
+<h3 id="rnns-for-text-classification-seq2vec">RNNs for text
+classification (seq2vec)</h3>
+<p>Classification of text could be sentiment analysis. For the purpose
+of classification, it’s best to pass the entire sentence as input. Every
+word gets assigned a unique ID, and only the N most frequent words get
+used to classify. The network typically has one <em>embedding layer</em>
+that serves as a lookup table that converts every word to a learned
+vector representation. The vector representation usually conveys how
+close certain words are to each other.</p>
+<h3 id="neural-machine-translation-encoder-decoder">Neural machine
+translation (encoder-decoder)</h3>
+<ul>
+<li>Encoder receives input sentence, one word at a time</li>
+<li>Decoder receives encoder state and correct previous output word</li>
+</ul>
+<figure>
+<img src="./img/encoder-decoder-translation.png"
+alt="Translation with encoder-decoder" />
+<figcaption aria-hidden="true">Translation with
+encoder-decoder</figcaption>
+</figure>
+<h4 id="bidirectional-rnn">Bidirectional RNN</h4>
+<p>The representation of a word typically depends on both the previous
+and the next word. That’s why a second RNN gets added that reads the
+sentence backwards. Then, concatenate the two states of the encoder RNNs
+before passing it to the decoder.</p>
+<figure>
+<img src="./img/bidirectional-rnn.png" alt="Bidirectinal RNN" />
+<figcaption aria-hidden="true">Bidirectinal RNN</figcaption>
+</figure>
+<h4 id="beam-search">Beam search</h4>
+<p>Keep track of the <code>k</code> most likely potential output
+sentences. Try to extend all of these sentences with one additional
+word.</p>
+<h3 id="attention-mechanisms">Attention mechanisms</h3>
+<p>The encoder-decoder architecture struggles with long sentences
+because all the info needs to be encoded in the state. To solve this
+issue, an attention mechanism gets used.</p>
+<p>The attention mechanism keeps track of info related to all words in
+the input sentence and allow the decoder to selectively attend to parts
+of the input.</p>
+<ul>
+<li>We store the encoder’s output while preprocessing the input</li>
+<li>At each timestep, the decoder receives a weighted sum of those
+outputs as input.</li>
+<li>Weights are predicted by an alignment model based on the decoder’s
+current state and encoder outputs.</li>
+</ul>
+<h4 id="multi-head-attention">Multi-head attention</h4>
+<p>For each word in the input sentence, the attention applies a linear
+layer to obtain three tensors: key, value, query.</p>
+<p>It then calculates the similarity between the word’s query vec with
+all other key vecs. These similarities are used to calculate a weighted
+average. This is repeated a couple of times to allow the model to
+extract different types of relationships between input tokens.</p>
+<h3 id="transformers">Transformers</h3>
+<p>An architecture that does not make use of RNN or CNN, just fully
+connected layers + attention. It does not suffer from vanishing gradient
+and is better at capturing long-range patterns.</p>
+<ol type="1">
+<li>The sentence is split word by word</li>
+<li>Each word is replaced by a learnable embedding</li>
+<li>The sentence is then represented by a 3D tensor</li>
+<li>Tensor is transformed while going through the model but the
+dimensions remain the same</li>
+</ol>
+<p>The encoder transforms every input word into a high level
+representation that captures the meaning of that word in this specific
+sentence. While the decoder transforms the embedding of a translated
+word into the embedding of the next translated word based on the
+information extracted by the encoder.</p>
+<figure>
+<img src="./img/transformer.png" alt="Transformer" />
+<figcaption aria-hidden="true">Transformer</figcaption>
+</figure>
+<h3 id="gpt">GPT</h3>
+<ul>
+<li>Generative pretrained transformer
+<ul>
+<li>Pretrained: predict the next token in the sentence</li>
+<li>Finetuning: set of different task (summarization, text
+classification or sentiment analysis)</li>
+</ul></li>
+<li>Previous models used supervised learning (e.g. translation) but
+labeled datasets are expensive to collect</li>
+</ul>
+<h3 id="vision-transformer">Vision transformer</h3>
+<p>Transformers can also be used for image classification
+(e.g. ConvNet)</p>
 <hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
