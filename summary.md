@@ -1136,3 +1136,91 @@ For CNN, a common technique is to artificially increase the size of the training
 
 ---
 
+## 15. Processing Sequences using RNNs and CNNs
+
+**Recurrent Neural Networks**
+: NNs with neurons that have connections (weights) that point backwards. This characteristic is desirable when working with sequential data like time series prediction, speech recognition, NLP, video analysis, ...
+
+The output of a step `t` is given together with the input at step `t+1`
+
+$$y_{t} = \phi(W_{x}x_{(t)} + W_{y}y_{(t-1)} + b)$$
+
+![RNN output](./img/rnn-output.png)
+
+### RNN architectures
+
+There are a couple different RNN architectures
+
+#### Seq2seq
+
+For when both input and output are sequential. A use case of this could be text-to-speech conversion.
+
+![Seq2seq](./img/seq2seq.png)
+
+#### Seq2vec
+
+Input is sequential, but output is a fixed-size vector. A use case for this could be sentimental analysis, or a speech-recognition tool that has to understand only "hey google".
+
+![Seq2vec](./img/seq2vec.png)
+
+#### Vec2seq
+
+For when the input is a fixed-size vector, but the output needs to be sequential. A use case for this could be image captioning; a model gets an image as input and has to describe it.
+
+![Vec2seq](./img/vec2seq.png)
+
+#### Encoder-decoder
+
+A combination of Seq2vec and Vec2seq, it serves as an alternative for Seq2seq. 
+A use case for this could be a language translation model the translation system needs more than just one world, as the word could be different depending on the context. 
+
+![Encoder-decoder](./img/encoder-decoder.png)
+
+### Backpropagation through time
+
+To train an RNN, we unfold the network over time and train it like a feed forward model.
+
+Since the output of a neuron at a certain time step is a function of all the inputs at previous time steps, a neuron in an RNN is also called a **memory cell** (it preserves state)
+
+![RNN Backpropagation](./img/rnn-backpropagation.png)
+
+RNNs are known to have some issues during trraining:
+
+- RNNs are slow and unstable (especially for long sequences)
+- **Saturation**: the same weights are used in every step, we need to make sure that the output does not keep increasing.
+ 
+### Long-Short Term Memory (LSTMs)
+
+RNNs output depends on the input of all previous timesteps, but for long sequences, RNNs tend to forget the first inputs. That is why LSTM models *explicitly define a memory slot*.
+
+- Two memories:
+  - Short term (preivious outputs)
+  - Long term
+- Model decides what to store in long term
+- output is based on input and both memories
+
+![LSTM](./img/LSTM.png)
+
+> 💡: On exam, not necessary to reproduce schema, but know how to explain it!
+
+- Two states
+  - $c_{(t)}: long term$
+  - $h_{(t)}: short term$
+- Three gate controllers
+  - **Forget gate**: controls which part of long term gets erased
+  - **Input gate**: controls which part of `g(t)` should get added to long term
+  - **Output gate**: Which part of long term should get added to output
+
+### Gated Recurrent Units (GRU)
+
+A simplified version of LSTMs that work equally well.
+
+- Single state $h_{(t)}$
+- Single gate controller layer which controls both forget gate and input gate
+- No output gate
+- Different gate controller which decides what part of the state will be used in current step
+
+![GRU](./img/GRU.png)
+
+---
+

@@ -241,6 +241,22 @@
         <li><a href="#cnn-architecture" id="toc-cnn-architecture">CNN
         architecture</a></li>
         </ul></li>
+        <li><a href="#processing-sequences-using-rnns-and-cnns"
+        id="toc-processing-sequences-using-rnns-and-cnns">15. Processing
+        Sequences using RNNs and CNNs</a>
+        <ul>
+        <li><a href="#rnn-architectures" id="toc-rnn-architectures">RNN
+        architectures</a></li>
+        <li><a href="#backpropagation-through-time"
+        id="toc-backpropagation-through-time">Backpropagation through
+        time</a></li>
+        <li><a href="#long-short-term-memory-lstms"
+        id="toc-long-short-term-memory-lstms">Long-Short Term Memory
+        (LSTMs)</a></li>
+        <li><a href="#gated-recurrent-units-gru"
+        id="toc-gated-recurrent-units-gru">Gated Recurrent Units
+        (GRU)</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -1913,6 +1929,131 @@ input</p></li>
 <p>For CNN, a common technique is to artificially increase the size of
 the training set bet generating variants of existing training instances
 (rotate, flip, blur, crop, …). This often reduces overfitting.</p>
+<hr />
+<h2 id="processing-sequences-using-rnns-and-cnns">15. Processing
+Sequences using RNNs and CNNs</h2>
+<dl>
+<dt><strong>Recurrent Neural Networks</strong></dt>
+<dd>
+NNs with neurons that have connections (weights) that point backwards.
+This characteristic is desirable when working with sequential data like
+time series prediction, speech recognition, NLP, video analysis, …
+</dd>
+</dl>
+<p>The output of a step <code>t</code> is given together with the input
+at step <code>t+1</code></p>
+<p><span
+class="math display"><em>y</em><sub><em>t</em></sub> = <em>ϕ</em>(<em>W</em><sub><em>x</em></sub><em>x</em><sub>(<em>t</em>)</sub>+<em>W</em><sub><em>y</em></sub><em>y</em><sub>(<em>t</em>−1)</sub>+<em>b</em>)</span></p>
+<figure>
+<img src="./img/rnn-output.png" alt="RNN output" />
+<figcaption aria-hidden="true">RNN output</figcaption>
+</figure>
+<h3 id="rnn-architectures">RNN architectures</h3>
+<p>There are a couple different RNN architectures</p>
+<h4 id="seq2seq">Seq2seq</h4>
+<p>For when both input and output are sequential. A use case of this
+could be text-to-speech conversion.</p>
+<figure>
+<img src="./img/seq2seq.png" alt="Seq2seq" />
+<figcaption aria-hidden="true">Seq2seq</figcaption>
+</figure>
+<h4 id="seq2vec">Seq2vec</h4>
+<p>Input is sequential, but output is a fixed-size vector. A use case
+for this could be sentimental analysis, or a speech-recognition tool
+that has to understand only “hey google”.</p>
+<figure>
+<img src="./img/seq2vec.png" alt="Seq2vec" />
+<figcaption aria-hidden="true">Seq2vec</figcaption>
+</figure>
+<h4 id="vec2seq">Vec2seq</h4>
+<p>For when the input is a fixed-size vector, but the output needs to be
+sequential. A use case for this could be image captioning; a model gets
+an image as input and has to describe it.</p>
+<figure>
+<img src="./img/vec2seq.png" alt="Vec2seq" />
+<figcaption aria-hidden="true">Vec2seq</figcaption>
+</figure>
+<h4 id="encoder-decoder">Encoder-decoder</h4>
+<p>A combination of Seq2vec and Vec2seq, it serves as an alternative for
+Seq2seq. A use case for this could be a language translation model the
+translation system needs more than just one world, as the word could be
+different depending on the context.</p>
+<figure>
+<img src="./img/encoder-decoder.png" alt="Encoder-decoder" />
+<figcaption aria-hidden="true">Encoder-decoder</figcaption>
+</figure>
+<h3 id="backpropagation-through-time">Backpropagation through time</h3>
+<p>To train an RNN, we unfold the network over time and train it like a
+feed forward model.</p>
+<p>Since the output of a neuron at a certain time step is a function of
+all the inputs at previous time steps, a neuron in an RNN is also called
+a <strong>memory cell</strong> (it preserves state)</p>
+<figure>
+<img src="./img/rnn-backpropagation.png" alt="RNN Backpropagation" />
+<figcaption aria-hidden="true">RNN Backpropagation</figcaption>
+</figure>
+<p>RNNs are known to have some issues during trraining:</p>
+<ul>
+<li>RNNs are slow and unstable (especially for long sequences)</li>
+<li><strong>Saturation</strong>: the same weights are used in every
+step, we need to make sure that the output does not keep
+increasing.</li>
+</ul>
+<h3 id="long-short-term-memory-lstms">Long-Short Term Memory
+(LSTMs)</h3>
+<p>RNNs output depends on the input of all previous timesteps, but for
+long sequences, RNNs tend to forget the first inputs. That is why LSTM
+models <em>explicitly define a memory slot</em>.</p>
+<ul>
+<li>Two memories:
+<ul>
+<li>Short term (preivious outputs)</li>
+<li>Long term</li>
+</ul></li>
+<li>Model decides what to store in long term</li>
+<li>output is based on input and both memories</li>
+</ul>
+<figure>
+<img src="./img/LSTM.png" alt="LSTM" />
+<figcaption aria-hidden="true">LSTM</figcaption>
+</figure>
+<blockquote>
+<p>💡: On exam, not necessary to reproduce schema, but know how to
+explain it!</p>
+</blockquote>
+<ul>
+<li>Two states
+<ul>
+<li><span
+class="math inline"><em>c</em><sub>(<em>t</em>)</sub> : <em>l</em><em>o</em><em>n</em><em>g</em><em>t</em><em>e</em><em>r</em><em>m</em></span></li>
+<li><span
+class="math inline"><em>h</em><sub>(<em>t</em>)</sub> : <em>s</em><em>h</em><em>o</em><em>r</em><em>t</em><em>t</em><em>e</em><em>r</em><em>m</em></span></li>
+</ul></li>
+<li>Three gate controllers
+<ul>
+<li><strong>Forget gate</strong>: controls which part of long term gets
+erased</li>
+<li><strong>Input gate</strong>: controls which part of
+<code>g(t)</code> should get added to long term</li>
+<li><strong>Output gate</strong>: Which part of long term should get
+added to output</li>
+</ul></li>
+</ul>
+<h3 id="gated-recurrent-units-gru">Gated Recurrent Units (GRU)</h3>
+<p>A simplified version of LSTMs that work equally well.</p>
+<ul>
+<li>Single state <span
+class="math inline"><em>h</em><sub>(<em>t</em>)</sub></span></li>
+<li>Single gate controller layer which controls both forget gate and
+input gate</li>
+<li>No output gate</li>
+<li>Different gate controller which decides what part of the state will
+be used in current step</li>
+</ul>
+<figure>
+<img src="./img/GRU.png" alt="GRU" />
+<figcaption aria-hidden="true">GRU</figcaption>
+</figure>
 <hr />
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
