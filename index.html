@@ -283,6 +283,23 @@
         <li><a href="#vision-transformer"
         id="toc-vision-transformer">Vision transformer</a></li>
         </ul></li>
+        <li><a href="#autoencoders-gans-and-diffusion-models"
+        id="toc-autoencoders-gans-and-diffusion-models">17.
+        Autoencoders, GANs and diffusion models</a>
+        <ul>
+        <li><a href="#representation-learning-and-generative-modelling"
+        id="toc-representation-learning-and-generative-modelling">Representation
+        learning and generative modelling</a></li>
+        <li><a href="#autoencoders"
+        id="toc-autoencoders">Autoencoders</a></li>
+        <li><a href="#generative-adversarial-models-gan"
+        id="toc-generative-adversarial-models-gan">Generative
+        adversarial models (GAN)</a></li>
+        <li><a href="#diffusion-models"
+        id="toc-diffusion-models">Diffusion models</a></li>
+        <li><a href="#stable-diffusion" id="toc-stable-diffusion">Stable
+        diffusion</a></li>
+        </ul></li>
         </ul></li>
         </ul>
 
@@ -2217,6 +2234,178 @@ labeled datasets are expensive to collect</li>
 <p>Transformers can also be used for image classification
 (e.g. ConvNet)</p>
 <hr />
+<h2 id="autoencoders-gans-and-diffusion-models">17. Autoencoders, GANs
+and diffusion models</h2>
+<h3 id="representation-learning-and-generative-modelling">Representation
+learning and generative modelling</h3>
+<p><strong>Representation learning</strong>:</p>
+<ul>
+<li>Learn good feature descriptions from data without manually defining
+them</li>
+<li>Autoencoders can be used to do it in an unsupervised way</li>
+</ul>
+<p><strong>Generative modelling</strong>:</p>
+<ul>
+<li>Can generate realistic “fake” samples</li>
+<li>Can do stuff like colorization, image editing, future frame
+prediction, …</li>
+<li>Variational autoencoders</li>
+<li>Generative Adversarial networks</li>
+<li>Diffusion models</li>
+</ul>
+<h3 id="autoencoders">Autoencoders</h3>
+<p>Also mentioned in chapter <a href="#wave-3-deep-learning">10.
+Artificial NN’s dimensionality reduction</a></p>
+<figure>
+<img src="./img/autoencoder.png" alt="Autoencoder" />
+<figcaption aria-hidden="true">Autoencoder</figcaption>
+</figure>
+<ul>
+<li>The encoder transform data to a <strong>latent
+representation</strong> (a compressed representation)</li>
+<li>The decoder uses this representation to reconstruct input</li>
+<li>Trained using gradient descent</li>
+</ul>
+<h4 id="manifold-hypothesis">Manifold hypothesis</h4>
+<p>A hypothesis which explains why autoencoders work. It suggests that
+high-dimensional data, such as real-world data, lies on or near a
+lower-dimensional <strong>manifold</strong> within the high-dimensional
+space. In other words, even though data might exist in a
+high-dimensional space, it often occupies a lower-dimensional structure
+or subspace.</p>
+<p>By assuming that real-world data lies on a lower-dimensional
+manifold, autoencoders learn to represent and generate data in a way
+that captures the essential structure and variations within the
+data.</p>
+<h4 id="autoencoder-applications">Autoencoder applications</h4>
+<ul>
+<li><strong>Dimensionality reduction</strong>: sometimes autoencoders
+(encoder) are better than PCA because they can also make non linear
+mappings, in contrast to PCA</li>
+<li><strong>Unsupervised pretraining</strong>: When the labeled data is
+sparse:
+<ul>
+<li><ol type="1">
+<li>Train autoencoder on labeled data</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>Build a second model en use autoencoder of previous model as
+classification layer in new model</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>Train the second model</li>
+</ol></li>
+</ul></li>
+<li><strong>Anomaly detection</strong>: Train autoencoder on good data
+only, it will succeed in detecting anomalies because it wasn’t trained
+on bad data.</li>
+</ul>
+<h4 id="autoencoder-variants">Autoencoder variants</h4>
+<blockquote>
+<p>💡: These are not all that common, so likely not an exam question</p>
+</blockquote>
+<ul>
+<li><strong>Tying weights</strong>: reduce num of params by using the
+same weights as the encoder and decoder</li>
+<li><strong>Greedy layerwise training</strong>: first train autoencoder
+with two layers, then train in between these two layers</li>
+<li><strong>Sparse autoencoder</strong>: add regularization term during
+training to encourage the learning of sparse representation</li>
+</ul>
+<h4 id="convolutional-autoencoder">Convolutional autoencoder</h4>
+<p>For image inputs, its a good idea to add a CNN layer to the
+autoencoder. The encoder reduces the spatial size, and increased the
+number of feature maps. The decoder increases the spatial size, and
+decreased the number of feature maps.</p>
+<h4 id="transposed-convolution">Transposed convolution</h4>
+<blockquote>
+<p>💡: Also not that common , so likely not an exam question</p>
+</blockquote>
+<p>It’s an alternative for decoding, sometimes called “deconvolution”.
+It upsamples the spatial dimensions of the input, equivalent to a normal
+convolution with 0-padding and a flipped kernel.</p>
+<h4 id="denoising-autoencoder">Denoising autoencoder</h4>
+<p>Autoencoders can also be used to remove noise. Random noise is
+applied to inputs, the model gets assessed based on the original input
+(without the noise), so it learns to remove noise.</p>
+<h4 id="variational-autoencoders">Variational autoencoders</h4>
+<p>In contrast to normal autoencoders, the output is not deterministic,
+rather, it is probabilistic. It is also generative, so it can generate
+new samples.</p>
+<ul>
+<li>Latent vectors consists of two parts:
+<ul>
+<li>Mean coding (<span class="math inline"><em>μ</em></span>)</li>
+<li>Standard deviation (<span
+class="math inline"><em>σ</em></span>)</li>
+</ul></li>
+<li>During training, the encoder predicts both <span
+class="math inline"><em>μ</em></span> and <span
+class="math inline"><em>σ</em></span>.</li>
+<li>Trained using two loss functions:
+<ul>
+<li>Reconstruction Loss (e.g. MSE)</li>
+<li>Latent loss (to force the model to output codings that look like a
+gaussian distribution)</li>
+</ul></li>
+<li>After training we can sample from N(0,1) and pass these sampled
+latent codes to encoder to generate new samples.</li>
+<li>VAEs simulate disentanglement of the latent factors.</li>
+</ul>
+<figure>
+<img src="./img/variational-autoencoders.png"
+alt="Variational autoencoder" />
+<figcaption aria-hidden="true">Variational autoencoder</figcaption>
+</figure>
+<h3 id="generative-adversarial-models-gan">Generative adversarial models
+(GAN)</h3>
+<p>Two NNs get trained by competing with each other</p>
+<ul>
+<li><strong>Generator</strong>: generates a data sample based on
+noise</li>
+<li><strong>Discriminator</strong>: Tries to distinguish between real
+and fake samples</li>
+</ul>
+<p>The generator never sees real samples, it is trained to generate
+samples that will fool the discriminator.</p>
+<figure>
+<img src="./img/GAN.png" alt="GAN" />
+<figcaption aria-hidden="true">GAN</figcaption>
+</figure>
+<h4 id="problems">Problems</h4>
+<ul>
+<li>Discriminator and generator compete with each other, this results in
+a complex optimization problem</li>
+<li>Very sensitive to hyper params</li>
+<li><strong>Mode collapse</strong>: when generator becomes less
+diverse</li>
+</ul>
+<h3 id="diffusion-models">Diffusion models</h3>
+<ul>
+<li><p>Training</p>
+<ul>
+<li>Keep adding noise to an image to generate increasingly noise
+versions</li>
+<li>Train denoiseing autoencoer to restore less noisy version from noisy
+image</li>
+</ul></li>
+<li><p>Generating new image: start from random noise and apply all
+denoiseing models</p></li>
+<li><p>✅: Easy to train</p></li>
+<li><p>✅: Can generate more diverse images</p></li>
+<li><p>❌: Slow to generate new image</p></li>
+</ul>
+<dl>
+<dt><strong>Latent diffusion models</strong></dt>
+<dd>
+Combine VAE and a diffusion model. The diffusion model operates on the
+latent code of the VAE (generation is faster)
+</dd>
+</dl>
+<h3 id="stable-diffusion">Stable diffusion</h3>
+<p>Trained on images together with a human provided captions. The text
+is preprocessed by a transformer based encoder. Stable diffusions is
+used in image generation models like DALL-E.</p>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />

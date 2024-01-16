@@ -1322,3 +1322,123 @@ Transformers can also be used for image classification (e.g. ConvNet)
 
 ---
 
+## 17. Autoencoders, GANs and diffusion models
+
+### Representation learning and generative modelling
+
+**Representation learning**:
+
+- Learn good feature descriptions from data without manually defining them
+- Autoencoders can be used to do it in an unsupervised way
+
+**Generative modelling**:
+
+- Can generate realistic "fake" samples
+- Can do stuff like colorization, image editing, future frame prediction, ...
+- Variational autoencoders
+- Generative Adversarial networks
+- Diffusion models
+
+### Autoencoders
+
+Also mentioned in chapter [10. Artificial NN's dimensionality reduction](#wave-3-deep-learning)
+
+![Autoencoder](./img/autoencoder.png)
+
+- The encoder transform data to a **latent representation** (a compressed representation)
+- The decoder uses this representation to reconstruct input
+- Trained using gradient descent
+
+
+#### Manifold hypothesis
+
+A hypothesis which explains why autoencoders work. It suggests that high-dimensional data, such as real-world data, lies on or near a lower-dimensional **manifold** within the high-dimensional space.
+In other words, even though data might exist in a high-dimensional space, it often occupies a lower-dimensional structure or subspace.
+
+By assuming that real-world data lies on a lower-dimensional manifold, autoencoders learn to represent and generate data in a way that captures the essential structure and variations within the data.
+
+#### Autoencoder applications
+
+- **Dimensionality reduction**: sometimes autoencoders (encoder) are better than PCA because they can also make non linear mappings, in contrast to PCA
+- **Unsupervised pretraining**: When the labeled data is sparse:
+  - 1. Train autoencoder on labeled data
+  - 2. Build a second model en use autoencoder of previous model as classification layer in new model
+  - 3. Train the second model
+- **Anomaly detection**: Train autoencoder on good data only, it will succeed in detecting anomalies because it wasn't trained on bad data.
+
+#### Autoencoder variants
+
+> 💡: These are not all that common, so likely not an exam question
+
+- **Tying weights**: reduce num of params by using the same weights as the encoder and decoder
+- **Greedy layerwise training**: first train autoencoder with two layers, then train in between these two layers
+- **Sparse autoencoder**: add regularization term during training to encourage the learning of sparse representation
+
+#### Convolutional autoencoder
+
+For image inputs, its a good idea to add a CNN layer to the autoencoder. The encoder reduces the spatial size, and increased the number of feature maps. The decoder increases the spatial size, and decreased the number of feature maps.
+
+#### Transposed convolution
+
+> 💡: Also not that common , so likely not an exam question
+
+It's an alternative for decoding, sometimes called "deconvolution". 
+It upsamples the spatial dimensions of the input, equivalent to a normal convolution with 0-padding and a flipped kernel.
+
+#### Denoising autoencoder
+
+Autoencoders can also be used to remove noise. Random noise is applied to inputs, the model gets assessed based on the original input (without the noise), so it learns to remove noise.
+
+#### Variational autoencoders
+
+In contrast to normal autoencoders, the output is not deterministic, rather, it is probabilistic. It is also generative, so it can generate new samples.
+
+- Latent vectors consists of two parts:
+  - Mean coding ($\mu$)
+  - Standard deviation ($\sigma$)
+- During training, the encoder predicts both $\mu$ and $\sigma$.
+- Trained using two loss functions:
+  - Reconstruction Loss (e.g. MSE)
+  - Latent loss (to force the model to output codings that look like a gaussian distribution)
+- After training we can sample from N(0,1) and pass these sampled latent codes to encoder to generate new samples.
+- VAEs simulate disentanglement of the latent factors.
+
+![Variational autoencoder](./img/variational-autoencoders.png)
+
+
+### Generative adversarial models (GAN)
+
+Two NNs get trained by competing with each other
+
+- **Generator**: generates a data sample based on noise
+- **Discriminator**: Tries to distinguish between real and fake samples
+
+The generator never sees real samples, it is trained to generate samples that will fool the discriminator.
+
+![GAN](./img/GAN.png)
+
+#### Problems
+
+- Discriminator and generator compete with each other, this results in a complex optimization problem
+- Very sensitive to hyper params
+- **Mode collapse**: when generator becomes less diverse
+
+
+### Diffusion models
+
+- Training
+  - Keep adding noise to an image to generate increasingly noise versions
+  - Train denoiseing autoencoer to restore less noisy version from noisy image
+- Generating new image: start from random noise and apply all denoiseing models
+
+- ✅: Easy to train
+- ✅: Can generate more diverse images
+- ❌: Slow to generate new image
+
+**Latent diffusion models**
+: Combine VAE and a diffusion model. The diffusion model operates on the latent code of the VAE (generation is faster)
+
+### Stable diffusion
+
+Trained on images together with a human provided captions. The text is preprocessed by a transformer based encoder. Stable diffusions is used in image generation models like DALL-E.
+
