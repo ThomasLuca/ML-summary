@@ -420,7 +420,7 @@ data but underperforms on new data.</p>
 </figure>
 <h3 id="problems-with-bad-datasets">Problems with bad datasets</h3>
 <p><strong>Sampling bias</strong>: Dataset can be non-representative if
-it has an underrepresented classes.</p>
+it has an underrepresented class.</p>
 <p>Garbage in == Garbage out: Bad dataset is guaranteed to lead to a bad
 (trained) model.</p>
 <h2 id="end-to-end-ml-project">2. End-to-end ML project</h2>
@@ -526,7 +526,7 @@ documents or information are retrieved</li>
 <h4 id="f1-score">F1 score</h4>
 <p>It combines the precision and recall of a model into a single
 metric.</p>
-<p><span class="math inline">$F_{1} = 2 . \frac{precision \cdot
+<p><span class="math inline">$F_{1} = 2 \cdot \frac{precision \cdot
 recall}{precision + recall}$</span></p>
 <h3 id="binary-classification">Binary Classification</h3>
 <dl>
@@ -884,8 +884,11 @@ scale/standardize all values using the following formula: <span
 class="math inline">$x_{0, scaled} = \frac{x_{0} -
 \mu_{x_{0}}}{\sigma_{x_{0}}}$</span></p>
 <h3 id="soft-margin-classification">Soft margin classification</h3>
-<p>Allows for: - misclassification (can deal with outliers) - items in
-the margin</p>
+<p>Allows for:</p>
+<ul>
+<li>misclassification (can deal with outliers)</li>
+<li>items in the margin</li>
+</ul>
 <p>Tolerates some errors: <span
 class="math inline"><em>ζ</em><sup>(<em>i</em>)</sup> ≥ 0</span></p>
 <p><span

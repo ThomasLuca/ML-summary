@@ -59,7 +59,7 @@ Possible cures:
 
 ### Problems with bad datasets
 
-**Sampling bias**: Dataset can be non-representative if it has an underrepresented classes.
+**Sampling bias**: Dataset can be non-representative if it has an underrepresented class.
 
 Garbage in == Garbage out: Bad dataset is guaranteed to lead to a bad (trained) model.
 
@@ -124,6 +124,7 @@ Columns are predicted labels, rows are true labels
 Recall
 : How many of the actual positives are detected?: $recall = \frac{TP}{TP+FN}$
 
+
 **When do we want high precision?**
 
 - When false positives are costly (eg: medical predictions, fraud detection). You really don't want falsely flag a condition.
@@ -138,7 +139,7 @@ Recall
 
 It combines the precision and recall of a model into a single metric.
 
-$F_{1} = 2 . \frac{precision \cdot recall}{precision + recall}$
+$F_{1} = 2 \cdot \frac{precision \cdot recall}{precision + recall}$
 
 ### Binary Classification
 
@@ -378,6 +379,7 @@ $x_{0, scaled} = \frac{x_{0} - \mu_{x_{0}}}{\sigma_{x_{0}}}$
 ### Soft margin classification
 
 Allows for:
+
 - misclassification (can deal with outliers)
 - items in the margin
 
