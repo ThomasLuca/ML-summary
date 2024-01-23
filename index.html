@@ -658,8 +658,7 @@ in opposite directions of the gradient</li>
 <blockquote>
 <p>Convex vs non-convex optimization problem<br />
 <strong>Convex</strong>: There is no <em>local minimum</em>, only one
-<em>global minimum</em>. Gradient descent guaranteed to find
-minimum.<br />
+<em>global minimum</em>. Gradient descent guaranteed to find minimum.
 <strong>Non-convex</strong>: There are <em>local minima</em>, meaning
 that model can easily get stuck on bad model.</p>
 </blockquote>
@@ -994,7 +993,7 @@ for classification vs regression</h3>
 </tr>
 <tr class="odd">
 <td>Internal nodes define a split of the remaining data points</td>
-<td>All items in the smae subspace have the same prediction</td>
+<td>All items in the same subspace have the same prediction</td>
 </tr>
 </tbody>
 </table>
@@ -1155,7 +1154,7 @@ that the model will combine predictions of other models.</p>
 <p>Every data point is a point in an n-dimensional space.</p>
 <h3 id="curse-of-dimensionality">Curse of dimensionality</h3>
 <p>As the amount of features (= dimensions) grows, the amount of data we
-need te generalize grows exponentially.</p>
+need to generalize grows exponentially.</p>
 <ul>
 <li><em>Data becomes sparser: instances are further from each other in
 higher dimensions</em></li>
@@ -1973,7 +1972,7 @@ input</p></li>
 </figure>
 <h4 id="data-augmentation">Data augmentation</h4>
 <p>For CNN, a common technique is to artificially increase the size of
-the training set bet generating variants of existing training instances
+the training set but generating variants of existing training instances
 (rotate, flip, blur, crop, …). This often reduces overfitting.</p>
 <hr />
 <h2 id="processing-sequences-using-rnns-and-cnns">15. Processing
@@ -2033,7 +2032,7 @@ different depending on the context.</p>
 feed forward model.</p>
 <p>Since the output of a neuron at a certain time step is a function of
 all the inputs at previous time steps, a neuron in an RNN is also called
-a <strong>memory cell</strong> (it preserves state)</p>
+a <strong>memory cell</strong> (it preserves state).</p>
 <figure>
 <img src="./img/rnn-backpropagation.png" alt="RNN Backpropagation" />
 <figcaption aria-hidden="true">RNN Backpropagation</figcaption>

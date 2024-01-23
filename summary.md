@@ -221,9 +221,8 @@ Turn multiclass into binary classification (eg: classes [green, blue, red] -> on
 - **Learning rate** determines step size
 
 > Convex vs non-convex optimization problem  
-> **Convex**: There is no *local minimum*, only one *global minimum*. Gradient descent guaranteed to find minimum.  
-> **Non-convex**: There are *local minima*, meaning that model can easily get stuck on bad model.  
-
+> **Convex**: There is no *local minimum*, only one *global minimum*. Gradient descent guaranteed to find minimum.
+> **Non-convex**: There are *local minima*, meaning that model can easily get stuck on bad model.
 
 ##### Batch Gradient descent
 
@@ -446,7 +445,7 @@ Y = Patient has heart disease
 |------------------------------------------------------------|---------------------------------------------------------|
 | Predict class members                                      |  Predict continuous value                               |
 | Leaves store class probabilities                           | Leaves store values                                     |
-| Internal nodes define a split of the remaining data points | All items in the smae subspace have the same prediction |
+| Internal nodes define a split of the remaining data points | All items in the same subspace have the same prediction |
 
 ### Building a decision tree
 
@@ -468,15 +467,15 @@ Y = Patient has heart disease
 
 Cost function: $J(k, t_{k}) = \frac{m_{left}}{m}\,G_{left} + \frac{m_{right}}{m}\,G_{right}$
 
-* G = cost (Gini impurity)
-* k = different classes
-* $t_{k}$ = Node
-* m = total number of instances in a node before the split
+- G = cost (Gini impurity)
+- k = different classes
+- $t_{k}$ = Node
+- m = total number of instances in a node before the split
 
 Gini impurity = $1-\sum_{i=1}^{C}(p_{i})^{2}$
 
-* C = number of classes
-* $p_{i}$ = fraction of data points that belong to class C in the subset
+- C = number of classes
+- $p_{i}$ = fraction of data points that belong to class C in the subset
 
 ![Cart exercise example](./img/CART_example.png)
 
@@ -489,7 +488,6 @@ Instead of the *Gini impurity* we can also use Entropy
 
 In decision tree, entropy is zero if a particular node only contains samples of a single class.
 
-
 ### Regularization
 
 Decision trees, too, can overfit. Therefor regularization is important. It limits the freedom of:
@@ -498,7 +496,6 @@ Decision trees, too, can overfit. Therefor regularization is important. It limit
 - Min_weight_fraction_leaf
 - Max_height
 - Max_leaf_node
-
 
 ### Are decision trees any good?
 
@@ -539,7 +536,7 @@ Methods to make different versions:
 
 ### Boosting
 
-Train different models that correct each other's mistakes. 
+Train different models that correct each other's mistakes.
 
 Unlike voting, training is sequential and can not be performed in parallel.
 
@@ -554,7 +551,7 @@ Each sequential model focuses more on the data points that had incorrect predict
 1. Initialize every weight to 1/m
 2. Train the model (calculate its weighted error rate)
 3. Calculate the predictor weight
-4. Update the instance weights and normalize them 
+4. Update the instance weights and normalize them
 5. Repeat 2-4 until max number of predictors is reached or sufficient performance
 6. Calculate weighted prediction of the different models
 
@@ -574,14 +571,13 @@ Train a model using predictions of other models as input. Meaning that the model
 3. Extract the predictions of the models for the second part = **Blending data set**
 4. Train a model on the predictions of the first models
 
-
 ## 8. Dimensionality Reduction
 
 Every data point is a point in an n-dimensional space.
 
 ### Curse of dimensionality
 
-As the amount of features (= dimensions) grows, the amount of data we need te generalize grows exponentially.
+As the amount of features (= dimensions) grows, the amount of data we need to generalize grows exponentially.
 
 - *Data becomes sparser: instances are further from each other in higher dimensions*
 - *Distance loses its meaning*: all points become equally far away from a given point
@@ -609,9 +605,8 @@ Procedure:
 
 ![Example: projection on purple line will lead to larger variation](./img/linear_dimension_reduction_PCA.png)
 
-
 **How to find the optimal components?**
- 
+
 Calculate the normalized eigenvectors of the covariancematrix. (matrix that displays the covariance between every pair of variables in a dataset)
 
 1. The eigenvector `v` of a matrix `A` are the vectors `v` such that if you multiply `A` with `v`, you get a multiple of `v`
@@ -619,7 +614,6 @@ Calculate the normalized eigenvectors of the covariancematrix. (matrix that disp
 3. The scalar `λ` is called the eigenvalue that belongs to `v`.
 
 **Covariance**: $\sigma(x_{1}, x_{2}) = \frac{1}{m-1} \sum_{i=1}^{m}(x_{1}^{(i)} - \overline{x_{1}})\,(x_{2}^{(i)} - \overline{x_{2}})$
-
 
 Covariance Matrix: $M = U \cdot \sum \cdot V^{*}$
 
@@ -642,7 +636,6 @@ Covariance Matrix: $M = U \cdot \sum \cdot V^{*}$
 ![Explained variance ratio](./img/explained_variance_ratio.png)
 
 > ❗: Make exercises on slides 25 and 26!
-
 
 ### Non-linear dimensionality reduction
 
@@ -673,7 +666,7 @@ Strategy:
 ![Example progression of k-means](./img/k-mean.png)
 
 **Problem**
-: If initial randomly selected centroids are bad, it may never find the right clusters. 
+: If initial randomly selected centroids are bad, it may never find the right clusters.
 
 **Solution**
 : Restart the k-means algo x-times and pick the clustering with the lowest **inertia** (= mean average distance of each point to its closest centroid)
@@ -788,7 +781,6 @@ Every item `x` in our dataset is a sample of an unknown distribution $P_{data}(x
 $$P_{model}(x^{(1)},\ldots,x^{(m)}; \theta) = \prod_{i=1}^{m} P_{model}(x^{(i)};\theta) = \mathcal{L}(\theta)$$
 
 > ❗: High probability for a practical question on the exam!
-
 
 #### Negative Loglikelihood estimation
 
@@ -1134,7 +1126,7 @@ To perform classification, the model is typically followed by:
 
 #### Data augmentation
 
-For CNN, a common technique is to artificially increase the size of the training set bet generating variants of existing training instances (rotate, flip, blur, crop, ...). This often reduces overfitting.
+For CNN, a common technique is to artificially increase the size of the training set but generating variants of existing training instances (rotate, flip, blur, crop, ...). This often reduces overfitting.
 
 ---
 
@@ -1173,7 +1165,7 @@ For when the input is a fixed-size vector, but the output needs to be sequential
 
 #### Encoder-decoder
 
-A combination of Seq2vec and Vec2seq, it serves as an alternative for Seq2seq. 
+A combination of Seq2vec and Vec2seq, it serves as an alternative for Seq2seq.
 A use case for this could be a language translation model the translation system needs more than just one world, as the word could be different depending on the context. 
 
 ![Encoder-decoder](./img/encoder-decoder.png)
@@ -1182,7 +1174,7 @@ A use case for this could be a language translation model the translation system
 
 To train an RNN, we unfold the network over time and train it like a feed forward model.
 
-Since the output of a neuron at a certain time step is a function of all the inputs at previous time steps, a neuron in an RNN is also called a **memory cell** (it preserves state)
+Since the output of a neuron at a certain time step is a function of all the inputs at previous time steps, a neuron in an RNN is also called a **memory cell** (it preserves state).
 
 ![RNN Backpropagation](./img/rnn-backpropagation.png)
 
